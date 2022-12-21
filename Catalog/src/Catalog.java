@@ -1,4 +1,4 @@
-package CatalogApp;
+import CatalogCourses.Course;
 
 import java.util.ArrayList;
 
