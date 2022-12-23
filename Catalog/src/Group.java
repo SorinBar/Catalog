@@ -1,6 +1,7 @@
 import CatalogUsers.*;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 
 public class Group extends ArrayList<Student> {
@@ -34,5 +35,14 @@ public class Group extends ArrayList<Student> {
 
     public String getID() {
         return ID;
+    }
+
+    @Override
+    public boolean add(Student student) {
+        boolean status = super.add(student);
+        if (status && comp != null)
+            Collections.sort(this, comp);
+
+        return status;
     }
 }

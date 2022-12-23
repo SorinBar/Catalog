@@ -1,18 +1,25 @@
 import CatalogCourses.*;
 import CatalogUsers.*;
+
+import java.util.Comparator;
+
 public class Main {
     public static void main(String[] args) {
-        Grade g1 = new Grade();
-        g1.setPartialScore(2.3);
-        Grade g2 = null;
-        try {
-            g2 = (Grade) g1.clone();
-        } catch (CloneNotSupportedException e) {
-            System.out.println("problem");
-        }
-        g1.setExamScore(3.4000000000002);
-        g2.setExamScore(3.4000000000001);
-        System.out.println(g1.compareTo(g2));
+        Group group = new Group("321CC", new Assistant("marcel", "popescu"), new Comparator<Student>() {
+            @Override
+            public int compare(Student s1, Student s2) {
+                if (s1.getLastName().compareTo(s2.getLastName()) == 0)
+                    return s1.getFirstName().compareTo(s2.getFirstName());
+                else
+                    return s1.getLastName().compareTo(s2.getLastName());
+            }
+        });
+        group.add(new Student("AASorin", "B"));
+        group.add(new Student("Amalia", "B"));
+        group.add(new Student("David", "C"));
+        group.add(new Student("Aicusor", "D"));
+
+        System.out.println(group);
     }
 
 }
