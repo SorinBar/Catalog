@@ -17,7 +17,6 @@ public class Main {
         group.add(new Student("AASorin", "B"));
         group.add(new Student("Amalia", "B"));
         group.add(new Student("David", "C"));
-        group.add(new Student("Aicusor", "D"));
 
         System.out.println(group);
     }
