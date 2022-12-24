@@ -1,17 +1,23 @@
 package CatalogCourses;
 
+import CatalogAux.Grade;
+import CatalogAux.Group;
+import CatalogPatterns.Notification;
+import CatalogPatterns.Observer;
+import CatalogPatterns.Subject;
 import CatalogUsers.Assistant;
 import CatalogUsers.Student;
 import CatalogUsers.Teacher;
 
 import java.util.*;
 
-public abstract class Course {
+public abstract class Course implements Subject {
     private String name;
     private Teacher teacher;
     private HashSet<Assistant> assistants;
     protected ArrayList<Grade> grades;
     private HashMap<String, Group> groups;
+    private ArrayList<Observer> observers;
     private int credit;
 
     protected Course(CourseBuilder builder) {
@@ -21,8 +27,8 @@ public abstract class Course {
         this.grades = builder.grades;
         this.groups = builder.groups;
         this.credit = builder.credit;
-    };
-
+        this.observers = builder.observers;
+    }
     public void setName(String name) {
         this.name = name;
     }
@@ -46,6 +52,7 @@ public abstract class Course {
         if (reqGroup == null)
             return;
         reqGroup.setAssistant(assistant);
+        assistants.add(assistant);
     }
     public void addStudent(String ID, Student student) {
         Group reqGroup = (Group) (groups.get(ID));
@@ -78,6 +85,7 @@ public abstract class Course {
     }
     public void addGrade(Grade grade) {
         grades.add(grade);
+        notifyObservers(grade);
     }
     public ArrayList<Student> getAllStudents() {
         ArrayList<Student> students = new ArrayList<Student>();
@@ -94,12 +102,29 @@ public abstract class Course {
     }
     public abstract ArrayList<Student> getGraduatedStudents();
 
+    @Override
+    public void addObserver(CatalogPatterns.Observer observer) {
+        if (!observers.contains(observer))
+            observers.add(observer);
+    }
+    @Override
+    public void removeObserver(CatalogPatterns.Observer observer) {
+        observers.remove(observer);
+    }
+    @Override
+    public void notifyObservers(Grade grade) {
+        Notification notification = new Notification(grade);
+        for (Observer observer : observers)
+            observer.update(notification);
+    }
+
     public static abstract class CourseBuilder {
         private String name;
         private Teacher teacher;
         private HashSet<Assistant> assistants;
         private ArrayList<Grade> grades;
         private HashMap<String, Group> groups;
+        private ArrayList<Observer> observers;
         private int credit;
 
         public CourseBuilder(String name) {
@@ -107,6 +132,7 @@ public abstract class Course {
             assistants = new HashSet<Assistant>();
             grades = new ArrayList<Grade>();
             groups = new HashMap<String, Group>();
+            observers = new ArrayList<Observer>();
         }
         public CourseBuilder teacher(Teacher teacher) {
             this.teacher = teacher;

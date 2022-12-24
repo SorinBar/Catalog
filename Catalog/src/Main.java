@@ -1,8 +1,15 @@
+import CatalogAux.Grade;
 import CatalogCourses.*;
+import CatalogPatterns.Notification;
 import CatalogUsers.*;
+
+import java.util.Date;
+
+import static java.lang.Thread.sleep;
 
 public class Main {
     public static void main(String[] args) {
+
         FullCourse test = (FullCourse) new FullCourse.FullCourseBuilder("Mate")
                 .teacher(new Teacher("Ana", "Maria"))
                 .credit(4)

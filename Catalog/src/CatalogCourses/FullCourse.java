@@ -1,5 +1,6 @@
 package CatalogCourses;
 
+import CatalogAux.Grade;
 import CatalogUsers.Student;
 
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package CatalogCourses;
+package CatalogAux;
 
 import CatalogUsers.Student;
 

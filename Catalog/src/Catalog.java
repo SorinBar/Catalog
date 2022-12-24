@@ -1,12 +1,13 @@
 import CatalogCourses.Course;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Catalog {
     private static Catalog instance = null;
-    private static ArrayList<Course> courses;
+    private static HashMap<String, Course> courses;
+
     private Catalog() {
-        courses = new ArrayList<Course>();
+        courses = new HashMap<String, Course>();
     }
     public static Catalog getInstance() {
         if (instance == null)
@@ -14,13 +15,12 @@ public class Catalog {
         return instance;
     }
     public void addCourse(Course course) {
-        courses.add(course);
+        courses.put(course.getName(), course);
     }
     public void removeCourse(Course course) {
-        courses.remove(course);
+        courses.remove(course.getName());
     }
-    // Test
-    public void printCourses() {
-        System.out.println(courses);
+    public Course getCourse(String name) {
+        return courses.get(name);
     }
 }
