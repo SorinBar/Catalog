@@ -1,3 +1,5 @@
+package CatalogCourses;
+
 import CatalogUsers.*;
 
 import java.util.ArrayList;
@@ -39,6 +41,9 @@ public class Group extends ArrayList<Student> {
 
     @Override
     public boolean add(Student student) {
+        if (contains(student))
+            return false;
+
         boolean status = super.add(student);
         if (status && comp != null)
             Collections.sort(this, comp);

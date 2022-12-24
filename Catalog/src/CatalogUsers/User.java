@@ -19,4 +19,14 @@ public abstract class User {
     public String getLastName() {
         return lastName;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!getLastName().equals(((User)obj).getLastName()))
+            return false;
+        if (!getFirstName().equals(((User)obj).getFirstName()))
+            return false;
+
+        return true;
+    }
 }
