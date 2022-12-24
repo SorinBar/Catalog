@@ -7,24 +7,21 @@ public abstract class User {
         this.firstName = firstName;
         this.lastName = lastName;
     }
-
-    public String toString() {
-        return firstName + " " + lastName;
-    }
-
     public String getFirstName() {
         return firstName;
     }
-
     public String getLastName() {
         return lastName;
     }
-
+    @Override
+    public String toString() {
+        return firstName + " " + lastName;
+    }
     @Override
     public boolean equals(Object obj) {
-        if (!getLastName().equals(((User)obj).getLastName()))
+        if (!getLastName().equals(((User) obj).getLastName()))
             return false;
-        if (!getFirstName().equals(((User)obj).getFirstName()))
+        if (!getFirstName().equals(((User) obj).getFirstName()))
             return false;
 
         return true;

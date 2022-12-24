@@ -8,7 +8,6 @@ public class UserFactory {
         Teacher
     }
     private UserFactory() {}
-
     public static User getUser(UserType type, String firstName, String lastName) {
         switch (type) {
             case Student:

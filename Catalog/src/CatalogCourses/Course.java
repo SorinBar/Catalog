@@ -4,6 +4,7 @@ import CatalogAux.Grade;
 import CatalogAux.Group;
 import CatalogPatterns.Notification;
 import CatalogPatterns.Observer;
+import CatalogPatterns.ScoreStrategy;
 import CatalogPatterns.Subject;
 import CatalogUsers.Assistant;
 import CatalogUsers.Student;
@@ -14,11 +15,12 @@ import java.util.*;
 public abstract class Course implements Subject {
     private String name;
     private Teacher teacher;
+    private int credit;
     private HashSet<Assistant> assistants;
     protected ArrayList<Grade> grades;
     private HashMap<String, Group> groups;
     private ArrayList<Observer> observers;
-    private int credit;
+    private ScoreStrategy strategy;
 
     protected Course(CourseBuilder builder) {
         this.name = builder.name;
@@ -28,6 +30,7 @@ public abstract class Course implements Subject {
         this.groups = builder.groups;
         this.credit = builder.credit;
         this.observers = builder.observers;
+        this.strategy = builder.strategy;
     }
     public void setName(String name) {
         this.name = name;
@@ -101,7 +104,14 @@ public abstract class Course implements Subject {
         return studGrades;
     }
     public abstract ArrayList<Student> getGraduatedStudents();
-
+    public void setStrategy(ScoreStrategy strategy) {
+        this.strategy = strategy;
+    }
+    public Student getBestStudent() {
+        if (strategy == null)
+            return null;
+        return strategy.getBestStudent(grades);
+    }
     @Override
     public void addObserver(CatalogPatterns.Observer observer) {
         if (!observers.contains(observer))
@@ -121,11 +131,12 @@ public abstract class Course implements Subject {
     public static abstract class CourseBuilder {
         private String name;
         private Teacher teacher;
+        private int credit;
         private HashSet<Assistant> assistants;
         private ArrayList<Grade> grades;
         private HashMap<String, Group> groups;
         private ArrayList<Observer> observers;
-        private int credit;
+        private ScoreStrategy strategy;
 
         public CourseBuilder(String name) {
             this.name = name;
@@ -133,6 +144,7 @@ public abstract class Course implements Subject {
             grades = new ArrayList<Grade>();
             groups = new HashMap<String, Group>();
             observers = new ArrayList<Observer>();
+            strategy = null;
         }
         public CourseBuilder teacher(Teacher teacher) {
             this.teacher = teacher;

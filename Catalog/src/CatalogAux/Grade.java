@@ -10,39 +10,31 @@ public class Grade implements Comparable, Cloneable{
     public void setPartialScore(Double partialScore) {
         this.partialScore = partialScore;
     }
-
     public Double getPartialScore() {
         return partialScore;
     }
-
     public void setExamScore(Double examScore) {
         this.examScore = examScore;
     }
-
     public Double getExamScore() {
         return examScore;
     }
-
     public void setStudent(Student student) {
         this.student = student;
     }
-
     public Student getStudent() {
         return student;
     }
-
     public void setCourse(String course) {
         this.course = course;
     }
-
     public String getCourse() {
         return course;
     }
-
     public Double getTotal() {
         return partialScore + examScore;
     }
-
+    @Override
     public int compareTo(Object o) {
         double cmp = getTotal() - ((Grade)o).getTotal();
         if (cmp > 0)
@@ -51,6 +43,7 @@ public class Grade implements Comparable, Cloneable{
             return -1;
         return 0;
     }
+    @Override
     public Object clone() throws CloneNotSupportedException {
         return super.clone();
     }
