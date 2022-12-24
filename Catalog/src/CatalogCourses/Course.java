@@ -1,5 +1,121 @@
 package CatalogCourses;
 
-public abstract class Course {
+import CatalogUsers.Assistant;
+import CatalogUsers.Student;
+import CatalogUsers.Teacher;
 
+import java.util.*;
+
+public abstract class Course {
+    private String name;
+    private Teacher teacher;
+    private HashSet<Assistant> assistants;
+    protected ArrayList<Grade> grades;
+    private HashMap<String, Group> groups;
+    private int credit;
+
+    protected Course(CourseBuilder builder) {
+        this.name = builder.name;
+        this.teacher = builder.teacher;
+        this.assistants = builder.assistants;
+        this.grades = builder.grades;
+        this.groups = builder.groups;
+        this.credit = builder.credit;
+    };
+
+    public void setName(String name) {
+        this.name = name;
+    }
+    public void setTeacher(Teacher teacher) {
+        this.teacher = teacher;
+    }
+    public void setCredit(int credit) {
+        this.credit = credit;
+    }
+    public String getName() {
+        return name;
+    }
+    public Teacher getTeacher() {
+        return teacher;
+    }
+    public int getCredit() {
+        return credit;
+    }
+    public void addAssistant(String ID, Assistant assistant) {
+        Group reqGroup = (Group) (groups.get(ID));
+        if (reqGroup == null)
+            return;
+        reqGroup.setAssistant(assistant);
+    }
+    public void addStudent(String ID, Student student) {
+        Group reqGroup = (Group) (groups.get(ID));
+        if (reqGroup == null)
+            return;
+        reqGroup.add(student);
+    }
+    public void addGroup(Group group) {
+        if (groups.get(group.getID()) != null)
+            return;
+        groups.put(group.getID(), group);
+    }
+    public void addGroup(String ID, Assistant assistant) {
+        if (groups.get(ID) != null)
+            return;
+        groups.put(ID, new Group(ID, assistant));
+    }
+    public void addGroup(String ID, Assistant assist, Comparator<Student> comp) {
+        if (groups.get(ID) != null)
+            return;
+        groups.put(ID, new Group(ID, assist, comp));
+    }
+    public Grade getGrade(Student student) {
+        for (Grade grade : grades) {
+            Student cStudent = grade.getStudent();
+            if (student.equals(cStudent))
+                return grade;
+        }
+        return null;
+    }
+    public void addGrade(Grade grade) {
+        grades.add(grade);
+    }
+    public ArrayList<Student> getAllStudents() {
+        ArrayList<Student> students = new ArrayList<Student>();
+        for (Map.Entry<String, Group> pair : groups.entrySet())
+            students.addAll(pair.getValue());
+
+        return students;
+    }
+    public HashMap<Student, Grade> getAllStudentGrades() {
+        HashMap<Student, Grade> studGrades = new HashMap<Student, Grade>();
+        for (Grade grade : grades)
+            studGrades.put(grade.getStudent(), grade);
+        return studGrades;
+    }
+    public abstract ArrayList<Student> getGraduatedStudents();
+
+    public static abstract class CourseBuilder {
+        private String name;
+        private Teacher teacher;
+        private HashSet<Assistant> assistants;
+        private ArrayList<Grade> grades;
+        private HashMap<String, Group> groups;
+        private int credit;
+
+        public CourseBuilder(String name) {
+            this.name = name;
+            assistants = new HashSet<Assistant>();
+            grades = new ArrayList<Grade>();
+            groups = new HashMap<String, Group>();
+        }
+        public CourseBuilder teacher(Teacher teacher) {
+            this.teacher = teacher;
+            return this;
+        }
+        public CourseBuilder credit(int credit) {
+            this.credit = credit;
+            return this;
+        }
+        public abstract Course build();
+    }
 }
