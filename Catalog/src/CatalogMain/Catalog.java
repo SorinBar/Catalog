@@ -1,4 +1,4 @@
-package Catalog;
+package CatalogMain;
 
 import CatalogAux.Grade;
 import CatalogCourses.Course;

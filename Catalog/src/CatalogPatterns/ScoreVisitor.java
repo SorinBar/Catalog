@@ -1,6 +1,6 @@
 package CatalogPatterns;
 
-import Catalog.Catalog;
+import CatalogMain.Catalog;
 import CatalogAux.Grade;
 import CatalogCourses.Course;
 import CatalogUsers.Assistant;

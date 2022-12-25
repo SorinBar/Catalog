@@ -4,8 +4,8 @@ import CatalogPatterns.Element;
 import CatalogPatterns.Visitor;
 
 public class Teacher extends User implements Element {
-    public Teacher(String firstName, String lastName) {
-        super(firstName, lastName);
+    public Teacher(String firstName, String lastName, String CNP) {
+        super(firstName, lastName, CNP);
     }
     @Override
     public void accept(Visitor visitor) {

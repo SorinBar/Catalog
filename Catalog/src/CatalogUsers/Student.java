@@ -3,8 +3,8 @@ package CatalogUsers;
 public class Student extends User {
     private Parent mother, father;
 
-    public Student(String firstName, String lastName) {
-        super(firstName, lastName);
+    public Student(String firstName, String lastName, String CNP) {
+        super(firstName, lastName, CNP);
         mother = null;
         father = null;
     }
@@ -19,19 +19,5 @@ public class Student extends User {
     }
     public Parent getFather() {
         return father;
-    }
-    @Override
-    public boolean equals(Object obj) {
-        boolean result = super.equals(obj);
-        if (!result)
-            return false;
-        if (father != null && ((Student)obj).getFather() != null)
-            if (!getFather().equals(((Student)obj).getFather()))
-                return false;
-        if (mother != null && ((Student)obj).getMother() != null)
-            if (!getMother().equals(((Student)obj).getMother()))
-                return false;
-
-        return true;
     }
 }
