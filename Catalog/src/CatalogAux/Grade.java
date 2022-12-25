@@ -7,6 +7,10 @@ public class Grade implements Comparable, Cloneable{
     private Student student;
     private String course;
 
+    public Grade() {
+        partialScore = null;
+        examScore = null;
+    }
     public void setPartialScore(Double partialScore) {
         this.partialScore = partialScore;
     }

@@ -12,14 +12,13 @@ import CatalogUsers.Teacher;
 
 import java.util.*;
 
-public abstract class Course implements Subject {
+public abstract class Course {
     private String name;
     private Teacher teacher;
     private int credit;
     private HashSet<Assistant> assistants;
     protected ArrayList<Grade> grades;
     private HashMap<String, Group> groups;
-    private ArrayList<Observer> observers;
     private ScoreStrategy strategy;
 
     protected Course(CourseBuilder builder) {
@@ -29,7 +28,6 @@ public abstract class Course implements Subject {
         this.grades = builder.grades;
         this.groups = builder.groups;
         this.credit = builder.credit;
-        this.observers = builder.observers;
         this.strategy = builder.strategy;
     }
     public void setName(String name) {
@@ -62,6 +60,13 @@ public abstract class Course implements Subject {
         if (reqGroup == null)
             return;
         reqGroup.add(student);
+        // Add grade for each student
+        /*
+        Grade grade = new Grade();
+        grade.setStudent(student);
+        grade.setCourse(name);
+        addGrade(grade);
+        */
     }
     public void addGroup(Group group) {
         if (groups.get(group.getID()) != null)
@@ -88,7 +93,6 @@ public abstract class Course implements Subject {
     }
     public void addGrade(Grade grade) {
         grades.add(grade);
-        notifyObservers(grade);
     }
     public ArrayList<Student> getAllStudents() {
         ArrayList<Student> students = new ArrayList<Student>();
@@ -112,21 +116,6 @@ public abstract class Course implements Subject {
             return null;
         return strategy.getBestStudent(grades);
     }
-    @Override
-    public void addObserver(CatalogPatterns.Observer observer) {
-        if (!observers.contains(observer))
-            observers.add(observer);
-    }
-    @Override
-    public void removeObserver(CatalogPatterns.Observer observer) {
-        observers.remove(observer);
-    }
-    @Override
-    public void notifyObservers(Grade grade) {
-        Notification notification = new Notification(grade);
-        for (Observer observer : observers)
-            observer.update(notification);
-    }
 
     public static abstract class CourseBuilder {
         private String name;
@@ -135,7 +124,6 @@ public abstract class Course implements Subject {
         private HashSet<Assistant> assistants;
         private ArrayList<Grade> grades;
         private HashMap<String, Group> groups;
-        private ArrayList<Observer> observers;
         private ScoreStrategy strategy;
 
         public CourseBuilder(String name) {
@@ -143,7 +131,6 @@ public abstract class Course implements Subject {
             assistants = new HashSet<Assistant>();
             grades = new ArrayList<Grade>();
             groups = new HashMap<String, Group>();
-            observers = new ArrayList<Observer>();
             strategy = null;
         }
         public CourseBuilder teacher(Teacher teacher) {

@@ -1,8 +1,10 @@
+import Catalog.Catalog;
 import CatalogAux.Grade;
 import CatalogCourses.*;
 import CatalogPatterns.BestExamScore;
 import CatalogPatterns.BestPartialScore;
 import CatalogPatterns.BestTotalScore;
+import CatalogPatterns.ScoreVisitor;
 import CatalogUsers.*;
 
 
@@ -25,13 +27,13 @@ public class Main {
         grade.setStudent(new Student("David", "Petrescu"));
         grade.setExamScore(3.9);
         grade.setPartialScore(3.0);
-        grade.setCourse("Course1");
+        grade.setCourse("Mate");
         test.addGrade(grade);
         grade = new Grade();
         grade.setStudent(new Student("Florin", "Cazaciu"));
         grade.setExamScore(3.2);
         grade.setPartialScore(4.0);
-        grade.setCourse("Course1");
+        grade.setCourse("Mate");
         test.addGrade(grade);
         System.out.println(test.getGraduatedStudents());
         System.out.println("Best partial grade:");
@@ -43,6 +45,8 @@ public class Main {
         System.out.println("Best exam grade:");
         test.setStrategy(new BestTotalScore());
         System.out.println(test.getBestStudent());
+        Teacher t1 = new Teacher("Florin", "Tamas");
+        //t1.accept(new ScoreVisitor(null));
     }
 
 }
