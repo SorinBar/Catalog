@@ -2,10 +2,7 @@ package CatalogCourses;
 
 import CatalogAux.Grade;
 import CatalogAux.Group;
-import CatalogPatterns.Notification;
-import CatalogPatterns.Observer;
 import CatalogPatterns.ScoreStrategy;
-import CatalogPatterns.Subject;
 import CatalogUsers.Assistant;
 import CatalogUsers.Student;
 import CatalogUsers.Teacher;
@@ -20,15 +17,17 @@ public abstract class Course {
     protected ArrayList<Grade> grades;
     private HashMap<String, Group> groups;
     private ScoreStrategy strategy;
+    private Snapshot snapshot;
 
     protected Course(CourseBuilder builder) {
         this.name = builder.name;
         this.teacher = builder.teacher;
-        this.assistants = builder.assistants;
-        this.grades = builder.grades;
-        this.groups = builder.groups;
         this.credit = builder.credit;
-        this.strategy = builder.strategy;
+        assistants = new HashSet<Assistant>();
+        grades = new ArrayList<Grade>();
+        groups = new HashMap<String, Group>();
+        snapshot = new Snapshot();
+        strategy = null;
     }
     public void setName(String name) {
         this.name = name;
@@ -116,22 +115,24 @@ public abstract class Course {
             return null;
         return strategy.getBestStudent(grades);
     }
-
+    public void makeBackup() {
+        snapshot.clearData();
+        snapshot.saveData(grades);
+    }
+    public void undo() {
+        while (grades.size() != 0)
+            grades.remove(0);
+        ArrayList<Grade> oldGrades = snapshot.getData();
+        for(Grade grade : oldGrades)
+            grades.add((Grade) grade.clone());
+    }
     public static abstract class CourseBuilder {
         private String name;
         private Teacher teacher;
         private int credit;
-        private HashSet<Assistant> assistants;
-        private ArrayList<Grade> grades;
-        private HashMap<String, Group> groups;
-        private ScoreStrategy strategy;
 
         public CourseBuilder(String name) {
             this.name = name;
-            assistants = new HashSet<Assistant>();
-            grades = new ArrayList<Grade>();
-            groups = new HashMap<String, Group>();
-            strategy = null;
         }
         public CourseBuilder teacher(Teacher teacher) {
             this.teacher = teacher;
@@ -142,5 +143,24 @@ public abstract class Course {
             return this;
         }
         public abstract Course build();
+    }
+    private class Snapshot {
+        private ArrayList<Grade> grades;
+
+        public Snapshot() {
+            grades = new ArrayList<Grade>();
+        }
+        public void clearData() {
+            while (grades.size() != 0)
+                grades.remove(0);
+        }
+        public void saveData(ArrayList<Grade> grades) {
+            clearData();
+            for(Grade grade : grades)
+                this.grades.add((Grade) grade.clone());
+        }
+        public ArrayList<Grade> getData() {
+            return grades;
+        }
     }
 }

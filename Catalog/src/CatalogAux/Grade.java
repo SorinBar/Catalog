@@ -48,7 +48,13 @@ public class Grade implements Comparable, Cloneable{
         return 0;
     }
     @Override
-    public Object clone() throws CloneNotSupportedException {
-        return super.clone();
+    public Object clone(){
+        Grade copy = new Grade();
+        copy.setStudent(student);
+        copy.setCourse(course);
+        copy.setExamScore(examScore + 0.0);
+        copy.setPartialScore(partialScore + 0.0);
+
+        return copy;
     }
 }

@@ -16,7 +16,6 @@ public class Main {
                 .credit(4)
                 .build();
 
-
         test.addGroup("321CC", new Assistant("first", "last"));
         test.addGroup("322CC", new Assistant("first2", "last"));
         test.addStudent("321CC", new Student("A", "B"));
