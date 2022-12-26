@@ -1,5 +1,6 @@
 package CatalogDatabase;
 
+import CatalogMain.Catalog;
 import CatalogUsers.Teacher;
 import CatalogUsers.Assistant;
 import CatalogUsers.Student;
@@ -20,13 +21,16 @@ public class UsersDatabase {
         assistants = new HashMap<String, Assistant>();
         students = new HashMap<String, Student>();
         parents = new HashMap<String, Parent>();
-        adminPassword = "A6xnQhbz4Vx2HuGl4lXwZ5U2I8iziLRFnhP5eNfIRvQ=";
     }
     public static UsersDatabase getInstance() {
         if (instance == null)
             instance = new UsersDatabase();
 
         return instance;
+    }
+
+    public void setAdminPassword(String adminPassword) {
+        this.adminPassword = adminPassword;
     }
     public void addTeacher(Teacher teacher) {
         teachers.put(teacher.getCNP(), teacher);

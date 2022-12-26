@@ -1,27 +1,36 @@
 package CatalogGUI;
 
+import CatalogDatabase.UsersDatabase;
+import CatalogMain.Catalog;
+
 import java.awt.*;
 
 public class Mediator {
+    private Catalog catalog;
+    private UsersDatabase usersDatabase;
     private CatalogApp catalogApp;
     private SingInMenu singInMenu;
     private SingUpMenu singUpMenu;
 
     public Mediator(CatalogApp catalogApp) {
         this.catalogApp = catalogApp;
+        singInMenu = new SingInMenu(this);
+        singUpMenu = new SingUpMenu(this);
     }
-    public void setSingInMenu(SingInMenu singInMenu) {
-        this.singInMenu = singInMenu;
+
+    public void setCatalog(Catalog catalog) {
+        this.catalog = catalog;
     }
-    public void setSingUpMenu(SingUpMenu singUpMenu) {
-        this.singUpMenu = singUpMenu;
+    public void setUsersDatabase(UsersDatabase usersDatabase) {
+        this.usersDatabase = usersDatabase;
     }
-    public SingInMenu getSingInMenu() {
-        return singInMenu;
+    public Catalog getCatalog() {
+        return catalog;
     }
-    public SingUpMenu getSingUpMenu() {
-        return singUpMenu;
+    public UsersDatabase getUsersDatabase() {
+        return usersDatabase;
     }
+
     public CatalogApp getCatalogApp() {
         return catalogApp;
     }

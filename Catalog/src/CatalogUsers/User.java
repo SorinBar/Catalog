@@ -19,11 +19,11 @@ public abstract class User {
     public String getCNP() {
         return CNP;
     }
-    public String getHashPass() {
-        return hashPass;
-    }
     public void setHashPass(String hashPass) {
         this.hashPass = hashPass;
+    }
+    public String getHashPass() {
+        return hashPass;
     }
 
     @Override

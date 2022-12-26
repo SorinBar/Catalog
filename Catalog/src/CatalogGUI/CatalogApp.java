@@ -2,26 +2,32 @@ package CatalogGUI;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class CatalogApp extends JFrame {
     private Mediator mediator;
 
     public CatalogApp() {
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setMinimumSize(new Dimension(600, 400));
         mediator = new Mediator(this);
-        mediator.setSingInMenu(new SingInMenu(mediator));
-        mediator.setSingUpMenu(new SingUpMenu(mediator));
-    }
+        setMinimumSize(new Dimension(500, 300));
+        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                // Update Database
 
+                setDefaultCloseOperation(EXIT_ON_CLOSE);
+            }
+        });
+    }
     public void startGUI() {
         mediator.showSingInMenu();
         setVisible(true);
     }
-
-    public static void main(String[] args) {
-        CatalogApp app = new CatalogApp();
-        app.startGUI();
+    public Mediator getMediator() {
+        return mediator;
     }
+
 
 }

@@ -172,7 +172,7 @@ public class SingInMenu{
                 if (!test.equals(userPassHash))
                     JOptionPane.showMessageDialog(mediator.getCatalogApp(), "Invalid Password");
                 else
-                    System.out.println("Success");
+                    mediator.showSingUpMenu();
             }
         }
     }
