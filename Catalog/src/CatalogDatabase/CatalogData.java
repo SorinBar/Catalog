@@ -14,6 +14,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
 
 public class CatalogData {
     public static void load(Catalog catalog,UsersDatabase usersDatabase, String path) {
@@ -74,6 +75,8 @@ public class CatalogData {
                         return result;
                     }
                 });
+                // Add group
+                course.addGroup(group);
                 while (!lines.get(index).isBlank()) {
                     studentCNP = lines.get(index++);
                     partialScore = -1.0;
@@ -101,7 +104,8 @@ public class CatalogData {
                 index++;
             }
         }
-        System.out.println(course.getAllStudents());
+        HashMap<String, Group> test = course.groups;
+        System.out.println(test);
     }
     public static void update(Catalog catalog, UsersDatabase usersDatabase, String path) {
         try {

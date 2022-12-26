@@ -12,7 +12,7 @@ public abstract class Course {
     private int credit;
     private HashSet<Assistant> assistants;
     protected ArrayList<Grade> grades;
-    private HashMap<String, Group> groups;
+    public HashMap<String, Group> groups;
     private ScoreStrategy strategy;
     private Snapshot snapshot;
 
