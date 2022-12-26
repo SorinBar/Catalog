@@ -1,4 +1,4 @@
-package CatalogCourses;
+package CatalogAux;
 
 import CatalogUsers.*;
 
@@ -16,29 +16,23 @@ public class Group extends ArrayList<Student> {
         this.assistant = assistant;
         this.comp = comp;
     }
-
     public Group(String ID, Assistant assistant) {
         this.ID = ID;
         this.assistant = assistant;
         comp = null;
     }
-
     public void setAssistant(Assistant assistant) {
         this.assistant = assistant;
     }
-
     public void setID(String ID) {
         this.ID = ID;
     }
-
     public Assistant getAssistant() {
         return assistant;
     }
-
     public String getID() {
         return ID;
     }
-
     @Override
     public boolean add(Student student) {
         if (contains(student))

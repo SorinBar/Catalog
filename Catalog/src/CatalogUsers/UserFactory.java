@@ -8,17 +8,16 @@ public class UserFactory {
         Teacher
     }
     private UserFactory() {}
-
-    public static User getUser(UserType type, String firstName, String lastName) {
+    public static User getUser(UserType type, String firstName, String lastName, String CNP) {
         switch (type) {
             case Student:
-                return new Student(firstName, lastName);
+                return new Student(firstName, lastName, CNP);
             case Parent:
-                return new Parent(firstName, lastName);
+                return new Parent(firstName, lastName, CNP);
             case Assistant:
-                return new Assistant(firstName, lastName);
+                return new Assistant(firstName, lastName, CNP);
             case Teacher:
-                return new Teacher(firstName, lastName);
+                return new Teacher(firstName, lastName, CNP);
         }
         return null;
     }
