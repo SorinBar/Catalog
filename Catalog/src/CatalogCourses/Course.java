@@ -1,11 +1,8 @@
 package CatalogCourses;
 
-import CatalogAux.Grade;
-import CatalogAux.Group;
+import CatalogAux.*;
+import CatalogUsers.*;
 import CatalogPatterns.ScoreStrategy;
-import CatalogUsers.Assistant;
-import CatalogUsers.Student;
-import CatalogUsers.Teacher;
 
 import java.util.*;
 
@@ -59,13 +56,6 @@ public abstract class Course {
         if (reqGroup == null)
             return;
         reqGroup.add(student);
-        // Add grade for each student
-        /*
-        Grade grade = new Grade();
-        grade.setStudent(student);
-        grade.setCourse(name);
-        addGrade(grade);
-        */
     }
     public void addGroup(Group group) {
         if (groups.get(group.getID()) != null)

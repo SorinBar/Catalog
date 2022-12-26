@@ -23,11 +23,11 @@ public class SetUp {
     }
 
     public void loadUsersDatabase() {
-        // Load
         usersDatabase.load();
         loadedUsersDatabase = true;
-        usersDatabase.print();
-        usersDatabase.update();
+        // TEST !!!!!
+        //usersDatabase.print();
+        //usersDatabase.update();
     }
 
     public void loadCatalog() {
@@ -36,6 +36,7 @@ public class SetUp {
             return;
         }
         // load
+        CatalogData.load(catalog, usersDatabase, Catalog.catalogPath);
         loadedCatalog = true;
     }
     public void startApp() {

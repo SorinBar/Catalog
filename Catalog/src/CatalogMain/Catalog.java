@@ -13,6 +13,7 @@ public class Catalog implements Subject {
     private static Catalog instance = null;
     private static HashMap<String, Course> courses;
     private ArrayList<Observer> observers;
+    public final static String catalogPath = "src/CatalogDatabase/Database/catalog.txt";
 
     private Catalog() {
         courses = new HashMap<String, Course>();
@@ -24,7 +25,7 @@ public class Catalog implements Subject {
         return instance;
     }
     public void addCourse(Course course) {
-        courses.put(course.getName(), course);
+        courses.putIfAbsent(course.getName(), course);
     }
     public void removeCourse(Course course) {
         courses.remove(course.getName());
