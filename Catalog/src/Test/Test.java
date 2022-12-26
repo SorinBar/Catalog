@@ -1,3 +1,5 @@
+package Test;
+
 import CatalogAux.Grade;
 import CatalogCourses.*;
 
@@ -7,7 +9,7 @@ import CatalogPatterns.BestTotalScore;
 import CatalogUsers.*;
 
 
-public class Main {
+public class Test {
     public static void main(String[] args) {
 
         FullCourse test = (FullCourse) new FullCourse.FullCourseBuilder("Mate")

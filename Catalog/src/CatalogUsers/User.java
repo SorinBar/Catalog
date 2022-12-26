@@ -3,10 +3,12 @@ package CatalogUsers;
 public abstract class User {
     private String firstName, lastName;
     private String CNP;
+    private String hashPass;
     public User(String firstName, String lastName, String CNP) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.CNP = CNP;
+        hashPass = "null";
     }
     public String getFirstName() {
         return firstName;
@@ -14,9 +16,14 @@ public abstract class User {
     public String getLastName() {
         return lastName;
     }
-
     public String getCNP() {
         return CNP;
+    }
+    public String getHashPass() {
+        return hashPass;
+    }
+    public void setHashPass(String hashPass) {
+        this.hashPass = hashPass;
     }
 
     @Override

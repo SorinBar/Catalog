@@ -34,7 +34,7 @@ public class Mediator {
         catalogApp.pack();
     }
     public void showSingUpMenu() {
-        catalogApp.setTitle("Catalog - Sing In");
+        catalogApp.setTitle("Catalog - Sing Up");
         catalogApp.getContentPane().removeAll();
         catalogApp.getContentPane().add(singUpMenu.getPanel(), BorderLayout.CENTER);
         catalogApp.getContentPane().doLayout();

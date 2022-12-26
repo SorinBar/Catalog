@@ -8,17 +8,20 @@ public class CatalogApp extends JFrame {
 
     public CatalogApp() {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setMinimumSize(new Dimension(600, 400));
         mediator = new Mediator(this);
         mediator.setSingInMenu(new SingInMenu(mediator));
         mediator.setSingUpMenu(new SingUpMenu(mediator));
+    }
+
+    public void startGUI() {
         mediator.showSingInMenu();
         setVisible(true);
     }
 
     public static void main(String[] args) {
-        CatalogApp frame = new CatalogApp();
-        frame.setMinimumSize(new Dimension(600, 400));
-
+        CatalogApp app = new CatalogApp();
+        app.startGUI();
     }
 
 }
