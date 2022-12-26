@@ -1,6 +1,5 @@
 package CatalogDatabase;
 
-import CatalogMain.Catalog;
 import CatalogUsers.Teacher;
 import CatalogUsers.Assistant;
 import CatalogUsers.Student;
@@ -15,6 +14,11 @@ public class UsersDatabase {
     private HashMap<String, Student> students;
     private HashMap<String, Parent> parents;
     private String adminPassword;
+    public final static String adminPath = "src/CatalogDatabase/Database/admin.txt";
+    public final static String teacherPath = "src/CatalogDatabase/Database/teachers.txt";
+    public final static String assistantsPath = "src/CatalogDatabase/Database/assistants.txt";
+    public final static String parentsPath = "src/CatalogDatabase/Database/parents.txt";
+    public final static String studentsPath = "src/CatalogDatabase/Database/students.txt";
 
     private UsersDatabase(){
         teachers = new HashMap<String, Teacher>();
@@ -32,16 +36,16 @@ public class UsersDatabase {
     public void setAdminPassword(String adminPassword) {
         this.adminPassword = adminPassword;
     }
-    public void addTeacher(Teacher teacher) {
+    public void add(Teacher teacher) {
         teachers.put(teacher.getCNP(), teacher);
     }
-    public void addAssistant(Assistant assistant) {
+    public void add(Assistant assistant) {
         assistants.put(assistant.getCNP(), assistant);
     }
-    public void addStudent(Student student) {
+    public void add(Student student) {
         students.put(student.getCNP(), student);
     }
-    public void addParent(Parent parent) {
+    public void add(Parent parent) {
         parents.put(parent.getCNP(), parent);
     }
     public String getAdminPassword() {
@@ -70,5 +74,27 @@ public class UsersDatabase {
     }
     public HashMap<String, Parent> getParents() {
         return parents;
+    }
+    public void print() {
+        System.out.println(adminPassword);
+        System.out.println(teachers);
+        System.out.println(assistants);
+        System.out.println(parents);
+        System.out.println(students);
+    }
+    public void load() {
+        AdminData.load(this, adminPath);
+        TeachersData.load(this, teacherPath);
+        AssistantsData.load(this, assistantsPath);
+        ParentsData.load(this, parentsPath);
+        StudentsData.load(this, studentsPath);
+    }
+
+    public void update() {
+        AdminData.update(this, adminPath);
+        TeachersData.update(this, teacherPath);
+        AssistantsData.update(this, assistantsPath);
+        ParentsData.update(this, parentsPath);
+        StudentsData.update(this, studentsPath);
     }
 }

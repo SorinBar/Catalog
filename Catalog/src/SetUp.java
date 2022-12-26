@@ -1,4 +1,4 @@
-import CatalogDatabase.UsersDatabase;
+import CatalogDatabase.*;
 import CatalogGUI.CatalogApp;
 import CatalogGUI.Mediator;
 import CatalogMain.Catalog;
@@ -24,7 +24,10 @@ public class SetUp {
 
     public void loadUsersDatabase() {
         // Load
+        usersDatabase.load();
         loadedUsersDatabase = true;
+        usersDatabase.print();
+        usersDatabase.update();
     }
 
     public void loadCatalog() {
@@ -46,6 +49,6 @@ public class SetUp {
         SetUp setUp = new SetUp();
         setUp.loadUsersDatabase();
         setUp.loadCatalog();
-        setUp.startApp();
+        //setUp.startApp();
     }
 }
