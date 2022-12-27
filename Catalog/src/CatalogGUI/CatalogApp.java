@@ -9,7 +9,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 public class CatalogApp extends JFrame {
-    private Mediator mediator;
+    private final Mediator mediator;
 
     public CatalogApp() {
         mediator = new Mediator(this);
@@ -26,7 +26,7 @@ public class CatalogApp extends JFrame {
         });
     }
     public void startGUI() {
-        mediator.showUsersMenu();
+        mediator.showSingInMenu();
         setVisible(true);
     }
     public Mediator getMediator() {
