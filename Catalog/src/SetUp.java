@@ -37,6 +37,8 @@ public class SetUp {
         }
         // load
         CatalogData.load(catalog, usersDatabase, Catalog.catalogPath);
+        // test update
+        CatalogData.update(catalog, usersDatabase, Catalog.catalogPath);
         catalog.print();
         loadedCatalog = true;
     }

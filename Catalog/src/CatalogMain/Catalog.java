@@ -34,11 +34,15 @@ public class Catalog implements Subject {
     public Course getCourse(String name) {
         return courses.get(name);
     }
+    public HashMap<String, Course> getCourses() {
+        return courses;
+    }
+
     // Testing
     public void print() {
         for (Map.Entry<String, Course> entry : courses.entrySet()) {
             entry.getValue().print();
-            System.out.println("");
+            System.out.println();
         }
     }
     @Override

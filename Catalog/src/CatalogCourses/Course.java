@@ -97,6 +97,9 @@ public abstract class Course {
         return studGrades;
     }
     public abstract ArrayList<Student> getGraduatedStudents();
+    public HashMap<String, Group> getGroups() {
+        return groups;
+    }
     public void setStrategy(ScoreStrategy strategy) {
         this.strategy = strategy;
     }
@@ -165,7 +168,7 @@ public abstract class Course {
             for (Student student : entry.getValue()) {
                 System.out.println(student + ", " + getGrade(student));
             }
-            System.out.println("");
+            System.out.println();
         }
     }
 }
