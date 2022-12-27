@@ -1,5 +1,8 @@
 package CatalogGUI;
 
+import CatalogDatabase.CatalogData;
+import CatalogMain.Catalog;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
@@ -16,7 +19,8 @@ public class CatalogApp extends JFrame {
             @Override
             public void windowClosing(WindowEvent e) {
                 // Update Database
-
+                mediator.getUsersDatabase().update();
+                CatalogData.update(mediator.getCatalog(), Catalog.catalogPath);
                 setDefaultCloseOperation(EXIT_ON_CLOSE);
             }
         });

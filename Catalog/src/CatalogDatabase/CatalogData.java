@@ -103,7 +103,7 @@ public class CatalogData {
             }
         }
     }
-    public static void update(Catalog catalog, UsersDatabase usersDatabase, String path) {
+    public static void update(Catalog catalog, String path) {
         try {
             FileWriter fileWriter = new FileWriter(path);
             PrintWriter printWriter = new PrintWriter(fileWriter);

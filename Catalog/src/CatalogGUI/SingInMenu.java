@@ -169,7 +169,7 @@ public class SingInMenu{
             passField.setForeground(Color.LIGHT_GRAY);
 
             if (adminButton.isSelected()) {
-                if (!test.equals(userPassHash))
+                if (!mediator.getUsersDatabase().getAdminPassword().equals(userPassHash))
                     JOptionPane.showMessageDialog(mediator.getCatalogApp(), "Invalid Password");
                 else
                     mediator.showSingUpMenu();

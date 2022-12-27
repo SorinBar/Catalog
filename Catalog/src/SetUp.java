@@ -25,9 +25,6 @@ public class SetUp {
     public void loadUsersDatabase() {
         usersDatabase.load();
         loadedUsersDatabase = true;
-        // TEST !!!!!
-        //usersDatabase.print();
-        //usersDatabase.update();
     }
 
     public void loadCatalog() {
@@ -35,11 +32,7 @@ public class SetUp {
             System.out.println("Users database is not loaded!");
             return;
         }
-        // load
         CatalogData.load(catalog, usersDatabase, Catalog.catalogPath);
-        // test update
-        CatalogData.update(catalog, usersDatabase, Catalog.catalogPath);
-        catalog.print();
         loadedCatalog = true;
     }
     public void startApp() {
@@ -53,6 +46,6 @@ public class SetUp {
         SetUp setUp = new SetUp();
         setUp.loadUsersDatabase();
         setUp.loadCatalog();
-        //setUp.startApp();
+        setUp.startApp();
     }
 }
