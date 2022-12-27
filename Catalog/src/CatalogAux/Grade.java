@@ -57,4 +57,18 @@ public class Grade implements Comparable, Cloneable{
 
         return copy;
     }
+    @Override
+    public String toString() {
+        String part, exam;
+        if (partialScore == null)
+            part = "null";
+        else
+            part = partialScore.toString();
+        if (examScore == null)
+            exam = "null";
+        else
+            exam = examScore.toString();
+
+        return "Grade: " + "partial: " + partialScore + ", exam: " + examScore;
+    }
 }

@@ -1,11 +1,8 @@
 package CatalogCourses;
 
-import CatalogAux.Grade;
-import CatalogAux.Group;
+import CatalogAux.*;
+import CatalogUsers.*;
 import CatalogPatterns.ScoreStrategy;
-import CatalogUsers.Assistant;
-import CatalogUsers.Student;
-import CatalogUsers.Teacher;
 
 import java.util.*;
 
@@ -15,7 +12,7 @@ public abstract class Course {
     private int credit;
     private HashSet<Assistant> assistants;
     protected ArrayList<Grade> grades;
-    private HashMap<String, Group> groups;
+    public HashMap<String, Group> groups;
     private ScoreStrategy strategy;
     private Snapshot snapshot;
 
@@ -59,13 +56,6 @@ public abstract class Course {
         if (reqGroup == null)
             return;
         reqGroup.add(student);
-        // Add grade for each student
-        /*
-        Grade grade = new Grade();
-        grade.setStudent(student);
-        grade.setCourse(name);
-        addGrade(grade);
-        */
     }
     public void addGroup(Group group) {
         if (groups.get(group.getID()) != null)
@@ -107,6 +97,9 @@ public abstract class Course {
         return studGrades;
     }
     public abstract ArrayList<Student> getGraduatedStudents();
+    public HashMap<String, Group> getGroups() {
+        return groups;
+    }
     public void setStrategy(ScoreStrategy strategy) {
         this.strategy = strategy;
     }
@@ -161,6 +154,21 @@ public abstract class Course {
         }
         public ArrayList<Grade> getData() {
             return grades;
+        }
+    }
+    // Testing
+    public void print() {
+        System.out.println("Course: " + name);
+        System.out.println("Teacher: " + teacher);
+        System.out.println("Type: " + this.getClass() + " Credit: " + credit);
+        for(Map.Entry<String, Group> entry : groups.entrySet()) {
+            System.out.println("Group: " + entry.getKey());
+            System.out.println("Assistant: " + entry.getValue().getAssistant());
+            System.out.println("Students: ");
+            for (Student student : entry.getValue()) {
+                System.out.println(student + ", " + getGrade(student));
+            }
+            System.out.println();
         }
     }
 }

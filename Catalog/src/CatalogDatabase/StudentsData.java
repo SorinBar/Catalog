@@ -45,8 +45,14 @@ public class StudentsData {
                 printWriter.println(entry.getValue().getFirstName());
                 printWriter.println(entry.getValue().getLastName());
                 printWriter.println(entry.getValue().getHashPass());
-                printWriter.println(entry.getValue().getFather().getCNP());
-                printWriter.println(entry.getValue().getMother().getCNP());
+                if (entry.getValue().getFather() == null)
+                    printWriter.println("null");
+                else
+                    printWriter.println(entry.getValue().getFather().getCNP());
+                if (entry.getValue().getMother() == null)
+                    printWriter.println("null");
+                else
+                    printWriter.println(entry.getValue().getMother().getCNP());
             }
 
             printWriter.close();

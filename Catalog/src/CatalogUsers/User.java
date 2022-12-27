@@ -28,7 +28,7 @@ public abstract class User {
 
     @Override
     public String toString() {
-        return firstName + " " + lastName;
+        return CNP + " " + firstName + " " + lastName;
     }
     @Override
     public boolean equals(Object obj) {
