@@ -3,6 +3,7 @@ package Test;
 import CatalogAux.Grade;
 import CatalogCourses.*;
 
+import CatalogDatabase.UsersDatabase;
 import CatalogPatterns.BestExamScore;
 import CatalogPatterns.BestPartialScore;
 import CatalogPatterns.BestTotalScore;
@@ -47,6 +48,11 @@ public class Test {
         test.setStrategy(new BestTotalScore());
         System.out.println(test.getBestStudent());
         Teacher t1 = new Teacher("Florin", "Tamas", "7");
+
+        UsersDatabase database = UsersDatabase.getInstance();
+        User user = UserFactory.getUser(UserFactory.UserType.Parent, "prenume", "nume", "1234");
+        database.add((Parent) user);
+        System.out.println(database.getParent("1234"));
 
     }
 

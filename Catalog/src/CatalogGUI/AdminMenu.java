@@ -33,18 +33,17 @@ public class AdminMenu{
         panel.setLayout(new GridBagLayout());
         panel.add(center);
     }
+    public JPanel getPanel() {
+        return panel;
+    }
 
     private class JButtonClick implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
-            JButton button = (JButton) (actionEvent.getSource());
-            if (button == coursesButton)
+            if (actionEvent.getSource() == coursesButton)
                 mediator.showCatalogMenu();
-            else
+            if (actionEvent.getSource() == usersButton)
                 mediator.showUsersMenu();
         }
-    }
-    public JPanel getPanel() {
-        return panel;
     }
 }
