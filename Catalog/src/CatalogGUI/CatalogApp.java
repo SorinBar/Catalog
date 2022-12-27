@@ -26,7 +26,7 @@ public class CatalogApp extends JFrame {
         });
     }
     public void startGUI() {
-        mediator.showSingInMenu();
+        mediator.showUsersMenu();
         setVisible(true);
     }
     public Mediator getMediator() {

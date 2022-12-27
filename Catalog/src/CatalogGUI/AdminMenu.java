@@ -1,43 +1,49 @@
 package CatalogGUI;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 
-public class AdminMenu {
+public class AdminMenu{
 
     Mediator mediator;
-    private JPanel panel;
-    private JScrollPane coursesScrollPane;
-    private JList<String> coursesPanel;
-    private DefaultListModel<String> coursesModel;
+    private final JPanel panel;
+    private final JButton coursesButton;
+    private final JButton usersButton;
+    private final JButtonClick jButtonClick;
 
     public AdminMenu(Mediator mediator) {
         // Set UP
         this.mediator = mediator;
         panel = new JPanel();
-        // Left Panel
-        JPanel left = new JPanel();
-        System.out.println(mediator.getCatalog().getCoursesNames());
-        //ArrayList<String> coursesNames = mediator.getCatalog().getCoursesNames();
-        //System.out.println(coursesNames);
+        coursesButton = new JButton("Edit courses");
+        usersButton = new JButton("Edit users");
+        jButtonClick = new JButtonClick();
 
+        // Main Panel
+        JPanel center = new JPanel();
+        center.setLayout(new BoxLayout(center, BoxLayout.X_AXIS));
+        center.add(coursesButton);
+        center.add(usersButton);
 
+        coursesButton.addActionListener(jButtonClick);
+        usersButton.addActionListener(jButtonClick);
 
-
-
-
-        JButton button = new JButton("click me!!!!");
-        panel.add(button);
-        button.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                mediator.showSingInMenu();
-            }
-        });
+        panel.setLayout(new GridBagLayout());
+        panel.add(center);
     }
 
+    private class JButtonClick implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent actionEvent) {
+            JButton button = (JButton) (actionEvent.getSource());
+            if (button == coursesButton)
+                mediator.showCatalogMenu();
+            else
+                mediator.showUsersMenu();
+        }
+    }
     public JPanel getPanel() {
         return panel;
     }

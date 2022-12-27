@@ -8,18 +8,18 @@ import java.awt.event.*;
 
 public class SingInMenu{
     Mediator mediator;
-    private JPanel panel;
-    private JRadioButton adminButton;
-    private JRadioButton teacherButton;
-    private JRadioButton assistantButton;
-    private JRadioButton studentButton;
-    private JRadioButton parentButton;
-    private JRadioSelect radioSelect;
-    private JTextField cnpField;
-    private JTextField passField;
-    private JButton singInButton;
-    private JTextFieldSelect textFieldSelect;
-    private JButtonClick buttonClick;
+    private final JPanel panel;
+    private final JRadioButton adminButton;
+    private final JRadioButton teacherButton;
+    private final JRadioButton assistantButton;
+    private final JRadioButton studentButton;
+    private final JRadioButton parentButton;
+    private final JRadioSelect radioSelect;
+    private final JTextField cnpField;
+    private final JTextField passField;
+    private final JButton singInButton;
+    private final JTextFieldSelect textFieldSelect;
+    private final JButtonClick buttonClick;
     private String userCNP;
     private String userPassHash;
 
