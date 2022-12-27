@@ -8,6 +8,7 @@ import CatalogPatterns.Subject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 public class Catalog implements Subject {
     private static Catalog instance = null;
@@ -32,6 +33,13 @@ public class Catalog implements Subject {
     }
     public Course getCourse(String name) {
         return courses.get(name);
+    }
+    // Testing
+    public void print() {
+        for (Map.Entry<String, Course> entry : courses.entrySet()) {
+            entry.getValue().print();
+            System.out.println("");
+        }
     }
     @Override
     public void addObserver(CatalogPatterns.Observer observer) {

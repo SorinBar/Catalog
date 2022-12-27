@@ -30,7 +30,7 @@ public class CatalogData {
         int credit;
         double partialScore;
         double examScore;
-        Course course = null;
+        Course course;
         Group group;
         Grade grade;
         String courseType;
@@ -39,7 +39,6 @@ public class CatalogData {
         String teachersCNP;
         String assistantCNP;
         String studentCNP;
-        String line;
 
         for(int i = 0; i < coursesNr; i++) {
             // Load course data
@@ -104,8 +103,6 @@ public class CatalogData {
                 index++;
             }
         }
-        HashMap<String, Group> test = course.groups;
-        System.out.println(test);
     }
     public static void update(Catalog catalog, UsersDatabase usersDatabase, String path) {
         try {

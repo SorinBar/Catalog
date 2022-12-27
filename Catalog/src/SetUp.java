@@ -37,6 +37,7 @@ public class SetUp {
         }
         // load
         CatalogData.load(catalog, usersDatabase, Catalog.catalogPath);
+        catalog.print();
         loadedCatalog = true;
     }
     public void startApp() {

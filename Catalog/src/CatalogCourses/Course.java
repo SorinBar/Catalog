@@ -153,4 +153,19 @@ public abstract class Course {
             return grades;
         }
     }
+    // Testing
+    public void print() {
+        System.out.println("Course: " + name);
+        System.out.println("Teacher: " + teacher);
+        System.out.println("Type: " + this.getClass() + " Credit: " + credit);
+        for(Map.Entry<String, Group> entry : groups.entrySet()) {
+            System.out.println("Group: " + entry.getKey());
+            System.out.println("Assistant: " + entry.getValue().getAssistant());
+            System.out.println("Students: ");
+            for (Student student : entry.getValue()) {
+                System.out.println(student + ", " + getGrade(student));
+            }
+            System.out.println("");
+        }
+    }
 }
