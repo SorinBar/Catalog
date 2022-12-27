@@ -37,6 +37,13 @@ public class Catalog implements Subject {
     public HashMap<String, Course> getCourses() {
         return courses;
     }
+    public ArrayList<String> getCoursesNames() {
+        ArrayList<String> names = new ArrayList<String>();
+        for (Map.Entry<String, Course> entry : courses.entrySet()) {
+            names.add(entry.getKey());
+        }
+        return names;
+    }
 
     // Testing
     public void print() {

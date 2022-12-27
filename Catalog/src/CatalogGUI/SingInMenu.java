@@ -22,7 +22,6 @@ public class SingInMenu{
     private JButtonClick buttonClick;
     private String userCNP;
     private String userPassHash;
-    private String test;
 
     public SingInMenu(Mediator mediator) {
         // Set up
@@ -40,10 +39,8 @@ public class SingInMenu{
         textFieldSelect = new JTextFieldSelect();
         buttonClick = new JButtonClick();
 
-
         userCNP = "";
         userPassHash = "";
-        test = Digest.SHA256("1234");
 
         // Font
         Font listFont = new Font("Open Sans", Font.PLAIN, 14);
@@ -120,19 +117,19 @@ public class SingInMenu{
         public void actionPerformed(ActionEvent actionEvent) {
             JRadioButton button = (JRadioButton) (actionEvent.getSource());
             if (button == adminButton) {
-                cnpField.setName(cnpField.getName());
+                cnpField.setText(cnpField.getName());
                 cnpField.setForeground(Color.LIGHT_GRAY);
                 cnpField.setEditable(false);
 
-                passField.setName(passField.getName());
+                passField.setText(passField.getName());
                 passField.setForeground(Color.LIGHT_GRAY);
             }
             else {
-                cnpField.setName(cnpField.getName());
+                cnpField.setText(cnpField.getName());
                 cnpField.setForeground(Color.LIGHT_GRAY);
                 cnpField.setEditable(true);
 
-                passField.setName(passField.getName());
+                passField.setText(passField.getName());
                 passField.setForeground(Color.LIGHT_GRAY);
             }
 
@@ -172,7 +169,7 @@ public class SingInMenu{
                 if (!mediator.getUsersDatabase().getAdminPassword().equals(userPassHash))
                     JOptionPane.showMessageDialog(mediator.getCatalogApp(), "Invalid Password");
                 else
-                    mediator.showSingUpMenu();
+                    mediator.showAdminMenu();
             }
         }
     }
