@@ -16,7 +16,7 @@ public class SingInMenu{
     private final JRadioButton parentButton;
     private final JRadioSelect radioSelect;
     private final JTextField cnpField;
-    private final JTextField passField;
+    private final JPasswordField passField;
     private final JButton singInButton;
     private final JTextFieldSelect textFieldSelect;
     private final JButtonClick buttonClick;
@@ -34,7 +34,7 @@ public class SingInMenu{
         parentButton = new JRadioButton("Parent");
         radioSelect = new JRadioSelect();
         cnpField = new JTextField();
-        passField = new JTextField();
+        passField = new JPasswordField();
         singInButton = new JButton("Sing In");
         textFieldSelect = new JTextFieldSelect();
         buttonClick = new JButtonClick();
@@ -94,6 +94,7 @@ public class SingInMenu{
         passField.setText(passField.getName());
         cnpField.setForeground(Color.LIGHT_GRAY);
         passField.setForeground(Color.LIGHT_GRAY);
+        passField.setEchoChar((char)0);
 
         cnpField.setEditable(false);
         cnpField.addFocusListener(textFieldSelect);
@@ -123,6 +124,7 @@ public class SingInMenu{
 
                 passField.setText(passField.getName());
                 passField.setForeground(Color.LIGHT_GRAY);
+                passField.setEchoChar((char)0);
             }
             else {
                 cnpField.setText(cnpField.getName());
@@ -131,6 +133,7 @@ public class SingInMenu{
 
                 passField.setText(passField.getName());
                 passField.setForeground(Color.LIGHT_GRAY);
+                passField.setEchoChar((char)0);
             }
 
         }
@@ -143,6 +146,8 @@ public class SingInMenu{
             if (field.isEditable() && field.getForeground() == Color.LIGHT_GRAY) {
                 field.setText("");
                 field.setForeground(Color.BLACK);
+                if (field == passField)
+                    passField.setEchoChar('*');
             }
         }
         @Override
@@ -151,6 +156,8 @@ public class SingInMenu{
             if (field.getText().equals("")){
                 field.setForeground(Color.LIGHT_GRAY);
                 field.setText(field.getName());
+                if (field == passField)
+                    passField.setEchoChar((char)0);
             }
         }
     }
@@ -164,6 +171,7 @@ public class SingInMenu{
             cnpField.setForeground(Color.LIGHT_GRAY);
             passField.setText(passField.getName());
             passField.setForeground(Color.LIGHT_GRAY);
+            passField.setEchoChar((char)0);
 
             if (adminButton.isSelected()) {
                 if (!mediator.getUsersDatabase().getAdminPassword().equals(userPassHash))

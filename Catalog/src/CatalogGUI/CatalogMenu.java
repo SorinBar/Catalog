@@ -90,8 +90,11 @@ public class CatalogMenu {
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
             if (actionEvent.getSource() == addButton) {
-                int result = JOptionPane.showConfirmDialog(mediator.getCatalogApp(), addCourseMenu.addPanel,
+                int option = JOptionPane.showConfirmDialog(mediator.getCatalogApp(), addCourseMenu.addPanel,
                         "Add Course", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+                if (option == JOptionPane.YES_OPTION) {
+                    System.out.println("added");
+                }
             }
             if (actionEvent.getSource() == editButton) {
                 System.out.println("edit");
@@ -129,6 +132,12 @@ public class CatalogMenu {
 
     private class AddCourseMenu {
         private JPanel addPanel;
+
+        //private final JTextField typeField;
+        //private final JTextField nameField;
+        //private final JTextField teacherCnpField;
+        //private final JTextField fatherCnpField;
+        //private final JTextField motherCnpField;
 
         private AddCourseMenu() {
             addPanel = new JPanel();
