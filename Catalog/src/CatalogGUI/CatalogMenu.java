@@ -1,22 +1,33 @@
 package CatalogGUI;
 
+import CatalogCourses.Course;
+import CatalogUsers.*;
+
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.util.ArrayList;
 
 public class CatalogMenu {
 
     Mediator mediator;
-    private JPanel panel;
-    private JScrollPane coursesPane;
-    private JList<String> coursesList;
-    private DefaultListModel<String> coursesModel;
-    private JButton addButton;
-    private JButton editButton;
-    private JButton removeButton;
-    private JRadioButton teacherButton;
-    private JRadioButton assistantButton;
-    private JRadioButton studentButton;
-    private JRadioButton parentButton;
+    private final JPanel panel;
+    private final JScrollPane coursesPane;
+    private final JList<String> coursesList;
+    private final DefaultListModel<String> coursesModel;
+    private final JListSelect jListSelect;
+    private final JButton addButton;
+    private final JButton editButton;
+    private final JButton removeButton;
+    private final JButton backButton;
+    private final JButtonClick buttonClick;
+    private Course selectedCourse;
+    private final AddCourseMenu addCourseMenu;
 
     public CatalogMenu(Mediator mediator) {
         // Set UP
@@ -25,60 +36,125 @@ public class CatalogMenu {
         coursesModel = new DefaultListModel<String>();
         coursesList = new JList<>(coursesModel);
         coursesPane = new JScrollPane(coursesList);
-        addButton = new JButton("+");
-        editButton = new JButton("S");
-        removeButton = new JButton("X");
-        teacherButton = new JRadioButton("Teacher");
-        assistantButton = new JRadioButton("Assistant");
-        studentButton = new JRadioButton("Student");
-        parentButton = new JRadioButton("Parent");
+        jListSelect = new JListSelect();
+        addButton = new JButton("Add");
+        editButton = new JButton("Edit");
+        removeButton = new JButton("Remove");
+        backButton = new JButton("Go Back");
+        buttonClick = new JButtonClick();
+        selectedCourse = null;
+        addCourseMenu = new AddCourseMenu();
 
         coursesModel.addAll(mediator.getCatalog().getCoursesNames());
-        // Left Panel
-        JPanel left = new JPanel();
-        left.setLayout(new BoxLayout(left, BoxLayout.Y_AXIS));
-        JPanel upLeft = new JPanel();
-        upLeft.setLayout(new BoxLayout(upLeft, BoxLayout.X_AXIS));
-        JLabel coursesLabel = new JLabel("Courses   ");
+        coursesList.addListSelectionListener(jListSelect);
 
-        upLeft.add(coursesLabel);
-        upLeft.add(addButton);
-        upLeft.add(editButton);
-        upLeft.add(removeButton);
+        // Font
+        Font titleFont = new Font("Open Sans", Font.BOLD, 16);
 
-        left.add(upLeft);
-        left.add(coursesPane);
-        // Right Panel
-        JPanel right = new JPanel();
-        right.setLayout(new BoxLayout(right, BoxLayout.Y_AXIS));
-        JPanel upRight = new JPanel();
-        upRight.setLayout(new GridBagLayout());
-        GridBagConstraints constraints = new GridBagConstraints();
+        // Up panel
+        JPanel up = new JPanel();
+        up.setLayout(new BoxLayout(up, BoxLayout.X_AXIS));
 
-        ButtonGroup group = new ButtonGroup();
-        group.add(teacherButton);
-        group.add(assistantButton);
-        group.add(studentButton);
-        group.add(parentButton);
+        JLabel titleLabel = new JLabel("Courses");
+        titleLabel.setFont(titleFont);
+        up.add(titleLabel);
 
-        constraints.fill = GridBagConstraints.BOTH;
-        constraints.gridx = 1;
-        JLabel usersLabel = new JLabel("Users");
-        upRight.add(teacherButton, constraints);
-        upRight.add(assistantButton, constraints);
-        upRight.add(studentButton, constraints);
-        upRight.add(parentButton, constraints);
+        // Down panel
+        JPanel down = new JPanel();
+        down.setLayout(new BoxLayout(down, BoxLayout.X_AXIS));
 
-        right.add(upRight);
+        addButton.addActionListener(buttonClick);
+        editButton.addActionListener(buttonClick);
+        removeButton.addActionListener(buttonClick);
+        backButton.addActionListener(buttonClick);
 
+        editButton.setEnabled(false);
+        removeButton.setEnabled(false);
 
-        // Main Panel
-        panel.setLayout(new GridLayout(1, 2));
-        panel.add(left);
-        panel.add(right);
+        down.add(addButton);
+        down.add(editButton);
+        down.add(removeButton);
+        down.add(backButton);
+
+        // Main panel
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        panel.add(up);
+        panel.add(coursesPane);
+        panel.add(down);
     }
-
     public JPanel getPanel() {
         return panel;
+    }
+
+    private class JButtonClick implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent actionEvent) {
+            if (actionEvent.getSource() == addButton) {
+                int result = JOptionPane.showConfirmDialog(mediator.getCatalogApp(), addCourseMenu.addPanel,
+                        "Add Course", JOptionPane.OK_CANCEL_OPTION);
+            }
+            if (actionEvent.getSource() == editButton) {
+                System.out.println("edit");
+            }
+            if (actionEvent.getSource() == removeButton) {
+                int option = JOptionPane.showConfirmDialog(mediator.getCatalogApp(),
+                        "Remove " + selectedCourse.getName() + "?",
+                        "Confirm", JOptionPane.YES_NO_OPTION);
+                if (option == JOptionPane.YES_OPTION) {
+                    mediator.getCatalog().removeCourse(selectedCourse);
+                    coursesModel.clear();
+                    coursesModel.addAll(mediator.getCatalog().getCoursesNames());
+
+                    // Reset buttons
+                    editButton.setEnabled(false);
+                    removeButton.setEnabled(false);
+                }
+            }
+            if (actionEvent.getSource() == backButton) {
+                mediator.showAdminMenu();
+            }
+        }
+    }
+
+    private class JListSelect implements ListSelectionListener {
+        @Override
+        public void valueChanged(ListSelectionEvent listSelectionEvent) {
+            if (!listSelectionEvent.getValueIsAdjusting()) {
+                selectedCourse = mediator.getCatalog().getCourse(coursesList.getSelectedValue());
+                editButton.setEnabled(true);
+                removeButton.setEnabled(true);
+            }
+        }
+    }
+
+    private class AddCourseMenu {
+        private JPanel addPanel;
+
+        private AddCourseMenu() {
+            addPanel = new JPanel();
+
+            addPanel.setLayout(new BoxLayout(addPanel, BoxLayout.Y_AXIS));
+            addPanel.setPreferredSize(new Dimension(400, 400));
+            addPanel.add(new JLabel("test"));
+        }
+
+        private class JTextFieldSelect implements FocusListener {
+            @Override
+            public void focusGained(FocusEvent focusEvent) {
+                JTextField field = (JTextField) (focusEvent.getSource());
+                if (field.isEditable() && field.getForeground() == Color.LIGHT_GRAY) {
+                    field.setText("");
+                    field.setForeground(Color.BLACK);
+                }
+            }
+            @Override
+            public void focusLost(FocusEvent focusEvent) {
+                JTextField field = (JTextField) (focusEvent.getSource());
+                if (field.getText().equals("")){
+                    field.setForeground(Color.LIGHT_GRAY);
+                    field.setText(field.getName());
+                }
+            }
+        }
     }
 }

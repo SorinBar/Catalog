@@ -2,8 +2,6 @@ import CatalogDatabase.*;
 import CatalogGUI.CatalogApp;
 import CatalogGUI.Mediator;
 import CatalogMain.Catalog;
-import Encryption.Digest;
-
 
 public class SetUp {
     private Mediator mediator;
@@ -40,18 +38,21 @@ public class SetUp {
         mediator.create();
         createdAppFrames = true;
     }
-    public void startApp() {
+    public void startGUI() {
         if (!createdAppFrames) {
             System.out.println("App frames are not created!");
             return;
         }
         catalogApp.startGUI();
     }
+    public void startApp() {
+        loadUsersDatabase();
+        loadCatalog();
+        createAppFrames();
+        startGUI();
+    }
     public static void main(String[] args) {
         SetUp setUp = new SetUp();
-        setUp.loadUsersDatabase();
-        setUp.loadCatalog();
-        setUp.createAppFrames();
         setUp.startApp();
     }
 }
