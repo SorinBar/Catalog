@@ -199,8 +199,9 @@ public class UsersMenu{
         public void actionPerformed(ActionEvent actionEvent) {
             if (actionEvent.getSource() == addButton) {
                 // Add user
-                int result = JOptionPane.showConfirmDialog(null, addPanel,
-                        "Enter " + userType + " Credentials", JOptionPane.OK_CANCEL_OPTION);
+                int result = JOptionPane.showConfirmDialog(mediator.getCatalogApp(), addPanel,
+                        "Enter " + userType + " Credentials", JOptionPane.OK_CANCEL_OPTION,
+                        JOptionPane.PLAIN_MESSAGE);
                 if (result == JOptionPane.OK_OPTION) {
                     if (isInputValid()) {
                         User user = UserFactory.getUser(userType, firstNameField.getText(),
@@ -257,6 +258,11 @@ public class UsersMenu{
                             usersModel.clear();
                             usersModel.addAll(mediator.getUsersDatabase().getParentsData());
                         }
+                    }
+                    else {
+                        JOptionPane.showMessageDialog(mediator.getCatalogApp(),
+                                "CNP should be made of 13 digits!\nPassword should not be empty!",
+                                "Wrong Input", JOptionPane.ERROR_MESSAGE);
                     }
                 }
             }

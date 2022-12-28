@@ -91,7 +91,7 @@ public class CatalogMenu {
         public void actionPerformed(ActionEvent actionEvent) {
             if (actionEvent.getSource() == addButton) {
                 int result = JOptionPane.showConfirmDialog(mediator.getCatalogApp(), addCourseMenu.addPanel,
-                        "Add Course", JOptionPane.OK_CANCEL_OPTION);
+                        "Add Course", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
             }
             if (actionEvent.getSource() == editButton) {
                 System.out.println("edit");

@@ -57,7 +57,7 @@ public class AdminMenu{
                if (password != null) {
                    if (password.isBlank())
                        JOptionPane.showMessageDialog(mediator.getCatalogApp(),
-                               "Empty password!", "Error", JOptionPane.ERROR_MESSAGE);
+                               "Password should not be empty!", "Error", JOptionPane.ERROR_MESSAGE);
                    else {
                        password = Digest.SHA256(password);
                        mediator.getUsersDatabase().setAdminPassword(password);
