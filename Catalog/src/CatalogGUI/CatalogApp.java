@@ -21,12 +21,13 @@ public class CatalogApp extends JFrame {
                 // Update Database
                 mediator.getUsersDatabase().update();
                 CatalogData.update(mediator.getCatalog(), Catalog.catalogPath);
+                mediator.getScoreVisitor().update();
                 setDefaultCloseOperation(EXIT_ON_CLOSE);
             }
         });
     }
     public void startGUI() {
-        mediator.showCatalogMenu();
+        mediator.showCourseMenu(mediator.getCatalog().getCourse("PO"));
         setVisible(true);
     }
     public Mediator getMediator() {

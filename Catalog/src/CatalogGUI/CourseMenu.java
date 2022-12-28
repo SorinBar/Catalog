@@ -1,8 +1,10 @@
 package CatalogGUI;
 
+import CatalogAux.Group;
 import CatalogCourses.Course;
 import CatalogCourses.FullCourse;
 import CatalogCourses.PartialCourse;
+import CatalogUsers.*;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -10,14 +12,15 @@ import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 
-public class CatalogMenu {
-
+public class CourseMenu {
     Mediator mediator;
     private final JPanel panel;
-    private final JScrollPane coursesPane;
-    private final JList<String> coursesList;
-    private final DefaultListModel<String> coursesModel;
+    private final JScrollPane studentsPane;
+    private final JList<String> studentsList;
+    private final DefaultListModel<String> studentsModel;
     private final JListSelect jListSelect;
     private final JButton addButton;
     private final JButton editButton;
@@ -25,26 +28,27 @@ public class CatalogMenu {
     private final JButton backButton;
     private final JButtonClick buttonClick;
     private Course selectedCourse;
-    private final AddCourseMenu addCourseMenu;
+    private Group selectedGroup;
+    private final AddGroupMenu addGroupMenu;
 
-    public CatalogMenu(Mediator mediator) {
+    public CourseMenu(Mediator mediator) {
         // Set UP
         this.mediator = mediator;
         panel = new JPanel();
-        coursesModel = new DefaultListModel<String>();
-        coursesList = new JList<>(coursesModel);
-        coursesPane = new JScrollPane(coursesList);
+        studentsModel = new DefaultListModel<String>();
+        studentsList = new JList<>(studentsModel);
+        studentsPane = new JScrollPane(studentsList);
         jListSelect = new JListSelect();
         addButton = new JButton("Add");
         editButton = new JButton("Edit");
         removeButton = new JButton("Remove");
         backButton = new JButton("Go Back");
         buttonClick = new JButtonClick();
-        selectedCourse = null;
-        addCourseMenu = new AddCourseMenu();
+        selectedGroup = null;
+        addGroupMenu = new AddGroupMenu();
 
-        coursesModel.addAll(mediator.getCatalog().getCoursesNames());
-        coursesList.addListSelectionListener(jListSelect);
+        studentsModel.addAll(mediator.getCatalog().getCoursesNames());
+        studentsList.addListSelectionListener(jListSelect);
 
         // Font
         Font titleFont = new Font("Open Sans", Font.BOLD, 16);
@@ -77,7 +81,7 @@ public class CatalogMenu {
         // Main panel
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         panel.add(up);
-        panel.add(coursesPane);
+        panel.add(studentsPane);
         panel.add(down);
     }
     public void updateCourses() {
@@ -85,11 +89,13 @@ public class CatalogMenu {
     }
     public void updateTeachers() {
         // Update current teachers
-        addCourseMenu.teacherBox.removeAllItems();
+        addGroupMenu.teacherBox.removeAllItems();
         for (String teacherData : mediator.getUsersDatabase().getTeachersData())
-            addCourseMenu.teacherBox.addItem(teacherData);
+            addGroupMenu.teacherBox.addItem(teacherData);
     }
-
+    public void setSelectedCourse(Course course) {
+        selectedCourse = course;
+    }
     public JPanel getPanel() {
         updateTeachers();
         return panel;
@@ -99,10 +105,10 @@ public class CatalogMenu {
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
             if (actionEvent.getSource() == addButton) {
-                int option = JOptionPane.showConfirmDialog(mediator.getCatalogApp(), addCourseMenu.addPanel,
+                int option = JOptionPane.showConfirmDialog(mediator.getCatalogApp(), addGroupMenu.addPanel,
                         "Add Course", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
                 if (option == JOptionPane.YES_OPTION) {
-                    if (addCourseMenu.nameField.getText().isBlank()) {
+                    if (addGroupMenu.nameField.getText().isBlank()) {
                         JOptionPane.showMessageDialog(mediator.getCatalogApp(),
                                 "Course name should not be empty!", "Error",
                                 JOptionPane.ERROR_MESSAGE);
@@ -113,12 +119,12 @@ public class CatalogMenu {
                         String teacherCNP;
                         int credit;
 
-                        courseName = addCourseMenu.nameField.getText();
-                        credit = addCourseMenu.creditBox.getSelectedIndex() + 1;
-                        teacherCNP = ((String) (addCourseMenu.teacherBox.getSelectedItem()))
+                        courseName = addGroupMenu.nameField.getText();
+                        credit = addGroupMenu.creditBox.getSelectedIndex() + 1;
+                        teacherCNP = ((String) (addGroupMenu.teacherBox.getSelectedItem()))
                                 .substring(0, 13);
 
-                        if (addCourseMenu.typeBox.getSelectedIndex() == 0) {
+                        if (addGroupMenu.typeBox.getSelectedIndex() == 0) {
                             newCourse = new FullCourse.FullCourseBuilder(courseName)
                                     .teacher(mediator.getUsersDatabase().getTeacher(teacherCNP))
                                     .credit(credit)
@@ -132,14 +138,14 @@ public class CatalogMenu {
                         }
                         mediator.getCatalog().addCourse(newCourse);
                         // Update courses
-                        coursesModel.clear();
-                        coursesModel.addAll(mediator.getCatalog().getCoursesNames());
+                        studentsModel.clear();
+                        studentsModel.addAll(mediator.getCatalog().getCoursesNames());
                     }
                 }
-                addCourseMenu.refresh();
+                addGroupMenu.refresh();
             }
             if (actionEvent.getSource() == editButton) {
-                mediator.showCourseMenu(selectedCourse);
+                System.out.println("edit");
             }
             if (actionEvent.getSource() == removeButton) {
                 int option = JOptionPane.showConfirmDialog(mediator.getCatalogApp(),
@@ -148,8 +154,8 @@ public class CatalogMenu {
                 if (option == JOptionPane.YES_OPTION) {
                     mediator.getCatalog().removeCourse(selectedCourse);
                     // Update courses
-                    coursesModel.clear();
-                    coursesModel.addAll(mediator.getCatalog().getCoursesNames());
+                    studentsModel.clear();
+                    studentsModel.addAll(mediator.getCatalog().getCoursesNames());
                     // Reset buttons
                     editButton.setEnabled(false);
                     removeButton.setEnabled(false);
@@ -165,14 +171,14 @@ public class CatalogMenu {
         @Override
         public void valueChanged(ListSelectionEvent listSelectionEvent) {
             if (!listSelectionEvent.getValueIsAdjusting()) {
-                selectedCourse = mediator.getCatalog().getCourse(coursesList.getSelectedValue());
+                selectedCourse = mediator.getCatalog().getCourse(studentsList.getSelectedValue());
                 editButton.setEnabled(true);
                 removeButton.setEnabled(true);
             }
         }
     }
 
-    private class AddCourseMenu {
+    private class AddGroupMenu {
         private JPanel addPanel;
 
         private final JComboBox<String> typeBox;
@@ -182,7 +188,7 @@ public class CatalogMenu {
         private final String[] types = {"Full Course", "Partial Course"};
         private final Integer[] credits = {1, 2, 3, 4, 5, 6, 7, 8, 9};
 
-        private AddCourseMenu() {
+        private AddGroupMenu() {
             addPanel = new JPanel();
             typeBox = new JComboBox<>(types);
             teacherBox = new JComboBox<>(mediator.getUsersDatabase().getTeachersData().toArray(new String[0]));
