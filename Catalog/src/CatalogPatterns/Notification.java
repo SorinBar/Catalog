@@ -3,25 +3,28 @@ package CatalogPatterns;
 import CatalogAux.Grade;
 
 import java.util.Date;
+import java.util.SplittableRandom;
 
 public class Notification {
-    private Date date;
+    private String date;
     private Grade grade;
 
     public Notification(Grade grade) {
         this.grade = grade;
-        date = new Date();
+        date = new Date().toString();
     }
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
     public Grade getGrade() {
         return grade;
     }
+    public void setDate(String date) {
+        this.date = date;
+    }
 
     @Override
     public String toString() {
-        return date + ": partial: " + grade.getPartialScore() +
-                ", exam: " + grade.getExamScore();
+        return date + " " + grade;
     }
 }

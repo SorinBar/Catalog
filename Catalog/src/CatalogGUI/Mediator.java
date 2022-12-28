@@ -1,6 +1,7 @@
 package CatalogGUI;
 
 import CatalogCourses.Course;
+import CatalogDatabase.NotificationsDatabase;
 import CatalogDatabase.UsersDatabase;
 import CatalogMain.Catalog;
 import CatalogPatterns.ScoreVisitor;
@@ -12,6 +13,7 @@ public class Mediator {
     private final UsersDatabase usersDatabase;
     private final CatalogApp catalogApp;
     private final ScoreVisitor scoreVisitor;
+    private final NotificationsDatabase notificationsDatabase;
     private SingInMenu singInMenu;
     private AdminMenu adminMenu;
     private UsersMenu usersMenu;
@@ -23,6 +25,7 @@ public class Mediator {
         catalog = Catalog.getInstance();
         usersDatabase = UsersDatabase.getInstance();
         scoreVisitor = new ScoreVisitor(catalog);
+        notificationsDatabase = new NotificationsDatabase(usersDatabase);
     }
     public void create() {
         singInMenu = new SingInMenu(this);
@@ -42,6 +45,9 @@ public class Mediator {
     }
     public ScoreVisitor getScoreVisitor() {
         return scoreVisitor;
+    }
+    public NotificationsDatabase getNotificationsDatabase() {
+        return notificationsDatabase;
     }
 
     public void showSingInMenu() {

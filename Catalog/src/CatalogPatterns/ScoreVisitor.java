@@ -32,11 +32,11 @@ public class ScoreVisitor implements Visitor{
         ArrayList<Tuple<Student, String, Double>> dataList = examScores.get(teacher);
         if (dataList == null)
             return;
-        Course course;
         Grade grade;
         for(Tuple<Student, String, Double> data : dataList) {
-            course = catalog.getCourse(data.getY());
-            grade = course.getGrade(data.getX());
+            grade = new Grade();
+            grade.setStudent(data.getX());
+            grade.setCourse(data.getY());
             grade.setExamScore(data.getZ());
             catalog.notifyObservers(grade);
         }
@@ -46,11 +46,11 @@ public class ScoreVisitor implements Visitor{
         ArrayList<Tuple<Student, String, Double>> dataList = partialScores.get(assistant);
         if (dataList == null)
             return;
-        Course course;
         Grade grade;
         for(Tuple<Student, String, Double> data : dataList) {
-            course = catalog.getCourse(data.getY());
-            grade = course.getGrade(data.getX());
+            grade = new Grade();
+            grade.setStudent(data.getX());
+            grade.setCourse(data.getY());
             grade.setExamScore(data.getZ());
             catalog.notifyObservers(grade);
         }
@@ -99,6 +99,7 @@ public class ScoreVisitor implements Visitor{
         String cnp;
         String courseName;
         double score;
+        // Teachers
         teachersNumber = Integer.parseInt(lines.get(index++));
         for (int i = 0; i < teachersNumber; i++) {
             cnp = lines.get(index++);
@@ -113,6 +114,7 @@ public class ScoreVisitor implements Visitor{
             }
         }
         index++;
+        // Assistants
         assistantsNumber = Integer.parseInt(lines.get(index++));
         for (int i = 0; i < teachersNumber; i++) {
             cnp = lines.get(index++);
@@ -126,7 +128,6 @@ public class ScoreVisitor implements Visitor{
                 addPartialScore(assistant, student, courseName, score);
             }
         }
-        update();
     }
     public void update() {
         try {
@@ -144,6 +145,7 @@ public class ScoreVisitor implements Visitor{
                 }
             }
             printWriter.println();
+            // Assistants
             printWriter.println(partialScores.size());
             for (Map.Entry<Assistant, ArrayList<Tuple<Student, String, Double>>> entry : partialScores.entrySet()) {
                 printWriter.println(entry.getKey().getCNP());

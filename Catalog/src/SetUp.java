@@ -11,6 +11,7 @@ public class SetUp {
     private boolean loadedUsersDatabase;
     private boolean loadedCatalog;
     private boolean loadedScoreDatabase;
+    private boolean loadedNotificationsDatabase;
     private boolean createdAppFrames;
     public SetUp() {
         catalogApp = new CatalogApp();
@@ -19,6 +20,7 @@ public class SetUp {
         loadedCatalog = false;
         loadedScoreDatabase = false;
         createdAppFrames = false;
+        loadedNotificationsDatabase = false;
     }
 
     public void loadUsersDatabase() {
@@ -42,9 +44,17 @@ public class SetUp {
         mediator.getScoreVisitor().load(mediator.getUsersDatabase());
         loadedScoreDatabase = true;
     }
-    public void createAppFrames() {
+    public void loadNotificationsDatabase() {
         if (!loadedScoreDatabase) {
-            System.out.println("Scores are not loaded!");
+            System.out.println("Scores database is not loaded!");
+            return;
+        }
+        mediator.getNotificationsDatabase().load();
+        loadedNotificationsDatabase = true;
+    }
+    public void createAppFrames() {
+        if (!loadedNotificationsDatabase) {
+            System.out.println("Notifications database is not loaded!");
             return;
         }
         mediator.create();
@@ -61,6 +71,7 @@ public class SetUp {
         loadUsersDatabase();
         loadCatalog();
         loadScoreDatabase();
+        loadNotificationsDatabase();
         createAppFrames();
         //startGUI();
     }
