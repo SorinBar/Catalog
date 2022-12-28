@@ -8,21 +8,20 @@ import java.awt.event.*;
 
 public class SingInMenu{
     Mediator mediator;
-    private JPanel panel;
-    private JRadioButton adminButton;
-    private JRadioButton teacherButton;
-    private JRadioButton assistantButton;
-    private JRadioButton studentButton;
-    private JRadioButton parentButton;
-    private JRadioSelect radioSelect;
-    private JTextField cnpField;
-    private JTextField passField;
-    private JButton singInButton;
-    private JTextFieldSelect textFieldSelect;
-    private JButtonClick buttonClick;
+    private final JPanel panel;
+    private final JRadioButton adminButton;
+    private final JRadioButton teacherButton;
+    private final JRadioButton assistantButton;
+    private final JRadioButton studentButton;
+    private final JRadioButton parentButton;
+    private final JRadioSelect radioSelect;
+    private final JTextField cnpField;
+    private final JPasswordField passField;
+    private final JButton singInButton;
+    private final JTextFieldSelect textFieldSelect;
+    private final JButtonClick buttonClick;
     private String userCNP;
     private String userPassHash;
-    private String test;
 
     public SingInMenu(Mediator mediator) {
         // Set up
@@ -35,15 +34,13 @@ public class SingInMenu{
         parentButton = new JRadioButton("Parent");
         radioSelect = new JRadioSelect();
         cnpField = new JTextField();
-        passField = new JTextField();
+        passField = new JPasswordField();
         singInButton = new JButton("Sing In");
         textFieldSelect = new JTextFieldSelect();
         buttonClick = new JButtonClick();
 
-
         userCNP = "";
         userPassHash = "";
-        test = Digest.SHA256("1234");
 
         // Font
         Font listFont = new Font("Open Sans", Font.PLAIN, 14);
@@ -97,6 +94,7 @@ public class SingInMenu{
         passField.setText(passField.getName());
         cnpField.setForeground(Color.LIGHT_GRAY);
         passField.setForeground(Color.LIGHT_GRAY);
+        passField.setEchoChar((char)0);
 
         cnpField.setEditable(false);
         cnpField.addFocusListener(textFieldSelect);
@@ -120,20 +118,22 @@ public class SingInMenu{
         public void actionPerformed(ActionEvent actionEvent) {
             JRadioButton button = (JRadioButton) (actionEvent.getSource());
             if (button == adminButton) {
-                cnpField.setName(cnpField.getName());
+                cnpField.setText(cnpField.getName());
                 cnpField.setForeground(Color.LIGHT_GRAY);
                 cnpField.setEditable(false);
 
-                passField.setName(passField.getName());
+                passField.setText(passField.getName());
                 passField.setForeground(Color.LIGHT_GRAY);
+                passField.setEchoChar((char)0);
             }
             else {
-                cnpField.setName(cnpField.getName());
+                cnpField.setText(cnpField.getName());
                 cnpField.setForeground(Color.LIGHT_GRAY);
                 cnpField.setEditable(true);
 
-                passField.setName(passField.getName());
+                passField.setText(passField.getName());
                 passField.setForeground(Color.LIGHT_GRAY);
+                passField.setEchoChar((char)0);
             }
 
         }
@@ -146,6 +146,8 @@ public class SingInMenu{
             if (field.isEditable() && field.getForeground() == Color.LIGHT_GRAY) {
                 field.setText("");
                 field.setForeground(Color.BLACK);
+                if (field == passField)
+                    passField.setEchoChar('*');
             }
         }
         @Override
@@ -154,6 +156,8 @@ public class SingInMenu{
             if (field.getText().equals("")){
                 field.setForeground(Color.LIGHT_GRAY);
                 field.setText(field.getName());
+                if (field == passField)
+                    passField.setEchoChar((char)0);
             }
         }
     }
@@ -167,12 +171,13 @@ public class SingInMenu{
             cnpField.setForeground(Color.LIGHT_GRAY);
             passField.setText(passField.getName());
             passField.setForeground(Color.LIGHT_GRAY);
+            passField.setEchoChar((char)0);
 
             if (adminButton.isSelected()) {
-                if (!test.equals(userPassHash))
+                if (!mediator.getUsersDatabase().getAdminPassword().equals(userPassHash))
                     JOptionPane.showMessageDialog(mediator.getCatalogApp(), "Invalid Password");
                 else
-                    mediator.showSingUpMenu();
+                    mediator.showAdminMenu();
             }
         }
     }

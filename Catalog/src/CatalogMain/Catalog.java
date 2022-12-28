@@ -6,19 +6,19 @@ import CatalogPatterns.Notification;
 import CatalogPatterns.Observer;
 import CatalogPatterns.Subject;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class Catalog implements Subject {
     private static Catalog instance = null;
     private static HashMap<String, Course> courses;
     private ArrayList<Observer> observers;
+    ArrayList<String> coursesNames;
     public final static String catalogPath = "src/CatalogDatabase/Database/catalog.txt";
 
     private Catalog() {
         courses = new HashMap<String, Course>();
         observers = new ArrayList<Observer>();
+        coursesNames =  new ArrayList<String>();
     }
     public static Catalog getInstance() {
         if (instance == null)
@@ -26,16 +26,24 @@ public class Catalog implements Subject {
         return instance;
     }
     public void addCourse(Course course) {
-        courses.putIfAbsent(course.getName(), course);
+        if (courses.containsKey(course.getName()))
+            return;
+        courses.put(course.getName(), course);
+        coursesNames.add(course.getName());
+        Collections.sort(coursesNames);
     }
     public void removeCourse(Course course) {
         courses.remove(course.getName());
+        coursesNames.remove(course.getName());
     }
     public Course getCourse(String name) {
         return courses.get(name);
     }
     public HashMap<String, Course> getCourses() {
         return courses;
+    }
+    public ArrayList<String> getCoursesNames() {
+        return coursesNames;
     }
 
     // Testing

@@ -3,31 +3,23 @@ import CatalogGUI.CatalogApp;
 import CatalogGUI.Mediator;
 import CatalogMain.Catalog;
 
-
 public class SetUp {
     private Mediator mediator;
-    private UsersDatabase usersDatabase;
-    private Catalog catalog;
     private CatalogApp catalogApp;
     private boolean loadedUsersDatabase;
     private boolean loadedCatalog;
+    private boolean createdAppFrames;
     public SetUp() {
         catalogApp = new CatalogApp();
         mediator  = catalogApp.getMediator();
-        catalog = Catalog.getInstance();
-        usersDatabase = UsersDatabase.getInstance();
-        mediator.setCatalog(catalog);
-        mediator.setUsersDatabase(usersDatabase);
         loadedUsersDatabase = false;
         loadedCatalog = false;
+        createdAppFrames = false;
     }
 
     public void loadUsersDatabase() {
-        usersDatabase.load();
+        mediator.getUsersDatabase().load();
         loadedUsersDatabase = true;
-        // TEST !!!!!
-        //usersDatabase.print();
-        //usersDatabase.update();
     }
 
     public void loadCatalog() {
@@ -35,24 +27,32 @@ public class SetUp {
             System.out.println("Users database is not loaded!");
             return;
         }
-        // load
-        CatalogData.load(catalog, usersDatabase, Catalog.catalogPath);
-        // test update
-        CatalogData.update(catalog, usersDatabase, Catalog.catalogPath);
-        catalog.print();
+        CatalogData.load(mediator.getCatalog(), mediator.getUsersDatabase(), Catalog.catalogPath);
         loadedCatalog = true;
     }
-    public void startApp() {
+    public void createAppFrames() {
         if (!loadedCatalog) {
             System.out.println("Catalog is not loaded!");
             return;
         }
+        mediator.create();
+        createdAppFrames = true;
+    }
+    public void startGUI() {
+        if (!createdAppFrames) {
+            System.out.println("App frames are not created!");
+            return;
+        }
         catalogApp.startGUI();
+    }
+    public void startApp() {
+        loadUsersDatabase();
+        loadCatalog();
+        createAppFrames();
+        startGUI();
     }
     public static void main(String[] args) {
         SetUp setUp = new SetUp();
-        setUp.loadUsersDatabase();
-        setUp.loadCatalog();
-        //setUp.startApp();
+        setUp.startApp();
     }
 }
