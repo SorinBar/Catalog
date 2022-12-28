@@ -6,6 +6,8 @@ import CatalogUsers.Student;
 import CatalogUsers.Parent;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 
 public class UsersDatabase {
@@ -18,7 +20,7 @@ public class UsersDatabase {
     private final ArrayList<String> assistantsData;
     private final ArrayList<String> studentsData;
     private final ArrayList<String> parentsData;
-
+    private final Comparator<String> userDataComp;
     private String adminPassword;
     public final static String adminPath = "src/CatalogDatabase/Database/admin.txt";
     public final static String teacherPath = "src/CatalogDatabase/Database/teachers.txt";
@@ -35,6 +37,16 @@ public class UsersDatabase {
         assistantsData = new ArrayList<String>();
         studentsData = new ArrayList<String>();
         parentsData = new ArrayList<String>();
+        userDataComp = new Comparator<String>() {
+            @Override
+            public int compare(String s1, String s2) {
+                int result = s1.substring(14).compareTo(s2.substring(14));
+                if (result == 0)
+                    return s1.compareTo(s2);
+
+                return result;
+            }
+        };
     }
     public static UsersDatabase getInstance() {
         if (instance == null)
@@ -49,18 +61,22 @@ public class UsersDatabase {
     public void add(Teacher teacher) {
         teachers.put(teacher.getCNP(), teacher);
         teachersData.add(teacher.toString());
+        teachersData.sort(userDataComp);
     }
     public void add(Assistant assistant) {
         assistants.put(assistant.getCNP(), assistant);
         assistantsData.add(assistant.toString());
+        assistantsData.sort(userDataComp);
     }
     public void add(Student student) {
         students.put(student.getCNP(), student);
         studentsData.add(student.toString());
+        studentsData.sort(userDataComp);
     }
     public void add(Parent parent) {
         parents.put(parent.getCNP(), parent);
         parentsData.add(parent.toString());
+        parentsData.sort(userDataComp);
     }
     public String getAdminPassword() {
         return adminPassword;

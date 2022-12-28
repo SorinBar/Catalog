@@ -1,7 +1,8 @@
 package CatalogGUI;
 
 import CatalogCourses.Course;
-import CatalogUsers.*;
+import CatalogCourses.FullCourse;
+import CatalogCourses.PartialCourse;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -9,9 +10,6 @@ import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
-import java.util.ArrayList;
 
 public class CatalogMenu {
 
@@ -82,7 +80,17 @@ public class CatalogMenu {
         panel.add(coursesPane);
         panel.add(down);
     }
+    public void updateCourses() {
+
+    }
+    public void updateTeachers() {
+        // Update current teachers
+        addCourseMenu.teacherBox.removeAllItems();
+        for (String teacherData : mediator.getUsersDatabase().getTeachersData())
+            addCourseMenu.teacherBox.addItem(teacherData);
+    }
     public JPanel getPanel() {
+        updateTeachers();
         return panel;
     }
 
@@ -93,10 +101,44 @@ public class CatalogMenu {
                 int option = JOptionPane.showConfirmDialog(mediator.getCatalogApp(), addCourseMenu.addPanel,
                         "Add Course", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
                 if (option == JOptionPane.YES_OPTION) {
-                    System.out.println("added");
+                    if (addCourseMenu.nameField.getText().isBlank()) {
+                        JOptionPane.showMessageDialog(mediator.getCatalogApp(),
+                                "Course name should not be empty!", "Error",
+                                JOptionPane.ERROR_MESSAGE);
+                    }
+                    else {
+                        Course newCourse;
+                        String courseName;
+                        String teacherCNP;
+                        int credit;
+
+                        courseName = addCourseMenu.nameField.getText();
+                        credit = addCourseMenu.creditBox.getSelectedIndex() + 1;
+                        teacherCNP = ((String) (addCourseMenu.teacherBox.getSelectedItem()))
+                                .substring(0, 13);
+
+                        if (addCourseMenu.typeBox.getSelectedIndex() == 0) {
+                            newCourse = new FullCourse.FullCourseBuilder(courseName)
+                                    .teacher(mediator.getUsersDatabase().getTeacher(teacherCNP))
+                                    .credit(credit)
+                                    .build();
+                        }
+                        else {
+                            newCourse = new PartialCourse.PartialCourseBuilder(courseName)
+                                    .teacher(mediator.getUsersDatabase().getTeacher(teacherCNP))
+                                    .credit(credit)
+                                    .build();
+                        }
+                        mediator.getCatalog().addCourse(newCourse);
+                        // Update courses
+                        coursesModel.clear();
+                        coursesModel.addAll(mediator.getCatalog().getCoursesNames());
+                    }
                 }
+                addCourseMenu.refresh();
             }
             if (actionEvent.getSource() == editButton) {
+                // To Do
                 System.out.println("edit");
             }
             if (actionEvent.getSource() == removeButton) {
@@ -105,9 +147,9 @@ public class CatalogMenu {
                         "Confirm", JOptionPane.YES_NO_OPTION);
                 if (option == JOptionPane.YES_OPTION) {
                     mediator.getCatalog().removeCourse(selectedCourse);
+                    // Update courses
                     coursesModel.clear();
                     coursesModel.addAll(mediator.getCatalog().getCoursesNames());
-
                     // Reset buttons
                     editButton.setEnabled(false);
                     removeButton.setEnabled(false);
@@ -133,37 +175,47 @@ public class CatalogMenu {
     private class AddCourseMenu {
         private JPanel addPanel;
 
-        //private final JTextField typeField;
-        //private final JTextField nameField;
-        //private final JTextField teacherCnpField;
-        //private final JTextField fatherCnpField;
-        //private final JTextField motherCnpField;
+        private final JComboBox<String> typeBox;
+        private final JComboBox<Integer> creditBox;
+        private final JComboBox<String> teacherBox;
+        private final JTextField nameField;
+        private final String[] types = {"Full Course", "Partial Course"};
+        private final Integer[] credits = {1, 2, 3, 4, 5, 6, 7, 8, 9};
 
         private AddCourseMenu() {
             addPanel = new JPanel();
+            typeBox = new JComboBox<>(types);
+            teacherBox = new JComboBox<>(mediator.getUsersDatabase().getTeachersData().toArray(new String[0]));
+            nameField = new JTextField();
+            creditBox = new JComboBox<>(credits);
 
             addPanel.setLayout(new BoxLayout(addPanel, BoxLayout.Y_AXIS));
-            addPanel.setPreferredSize(new Dimension(400, 400));
-            addPanel.add(new JLabel("test"));
-        }
+            addPanel.setPreferredSize(new Dimension(280, 180));
 
-        private class JTextFieldSelect implements FocusListener {
-            @Override
-            public void focusGained(FocusEvent focusEvent) {
-                JTextField field = (JTextField) (focusEvent.getSource());
-                if (field.isEditable() && field.getForeground() == Color.LIGHT_GRAY) {
-                    field.setText("");
-                    field.setForeground(Color.BLACK);
-                }
-            }
-            @Override
-            public void focusLost(FocusEvent focusEvent) {
-                JTextField field = (JTextField) (focusEvent.getSource());
-                if (field.getText().equals("")){
-                    field.setForeground(Color.LIGHT_GRAY);
-                    field.setText(field.getName());
-                }
-            }
+            JPanel typePanel = new JPanel(new BorderLayout());
+            JPanel creditPanel = new JPanel(new BorderLayout());
+            JPanel teacherBoxPanel = new JPanel(new BorderLayout());
+            JPanel namePanel = new JPanel(new BorderLayout());
+
+            typePanel.add(new JLabel("Type:"), BorderLayout.WEST);
+            creditPanel.add(new JLabel("Credit:"), BorderLayout.WEST);
+            teacherBoxPanel.add(new JLabel("Teacher:"), BorderLayout.WEST);
+            namePanel.add(new JLabel("Course name:"), BorderLayout.WEST);
+
+            addPanel.add(typePanel);
+            addPanel.add(typeBox);
+            addPanel.add(creditPanel);
+            addPanel.add(creditBox);
+            addPanel.add(teacherBoxPanel);
+            addPanel.add(teacherBox);
+            addPanel.add(namePanel);
+            addPanel.add(nameField);
+        }
+        private void refresh() {
+            typeBox.setSelectedIndex(0);
+            creditBox.setSelectedIndex(0);
+            teacherBox.setSelectedIndex(0);
+            nameField.setText("");
         }
     }
 }

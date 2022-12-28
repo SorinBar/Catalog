@@ -10,7 +10,6 @@ public class Mediator {
     private final UsersDatabase usersDatabase;
     private final CatalogApp catalogApp;
     private SingInMenu singInMenu;
-    private SingUpMenu singUpMenu;
     private AdminMenu adminMenu;
     private UsersMenu usersMenu;
     private CatalogMenu catalogMenu;
@@ -22,7 +21,6 @@ public class Mediator {
     }
     public void create() {
         singInMenu = new SingInMenu(this);
-        singUpMenu = new SingUpMenu(this);
         adminMenu = new AdminMenu(this);
         usersMenu = new UsersMenu(this);
         catalogMenu = new CatalogMenu(this);
@@ -41,14 +39,6 @@ public class Mediator {
         catalogApp.setTitle("Catalog - Sing In");
         catalogApp.getContentPane().removeAll();
         catalogApp.getContentPane().add(singInMenu.getPanel(), BorderLayout.CENTER);
-        catalogApp.getContentPane().doLayout();
-        catalogApp.update(catalogApp.getGraphics());
-        catalogApp.pack();
-    }
-    public void showSingUpMenu() {
-        catalogApp.setTitle("Catalog - Sing Up");
-        catalogApp.getContentPane().removeAll();
-        catalogApp.getContentPane().add(singUpMenu.getPanel(), BorderLayout.CENTER);
         catalogApp.getContentPane().doLayout();
         catalogApp.update(catalogApp.getGraphics());
         catalogApp.pack();
