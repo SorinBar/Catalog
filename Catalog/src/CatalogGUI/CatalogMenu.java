@@ -107,7 +107,7 @@ public class CatalogMenu {
                                 "Course name should not be empty!", "Error",
                                 JOptionPane.ERROR_MESSAGE);
                     }
-                    else {
+                    else if (addCourseMenu.teacherBox.getSelectedIndex() != -1){
                         Course newCourse;
                         String courseName;
                         String teacherCNP;
@@ -214,7 +214,8 @@ public class CatalogMenu {
         private void refresh() {
             typeBox.setSelectedIndex(0);
             creditBox.setSelectedIndex(0);
-            teacherBox.setSelectedIndex(0);
+            if (teacherBox.getSelectedIndex() != -1)
+                teacherBox.setSelectedIndex(0);
             nameField.setText("");
         }
     }
