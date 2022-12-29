@@ -195,7 +195,7 @@ public class CourseMenu {
                                 !addGradeMenu.examScoreField.getText().isBlank()) {
                             mediator.getScoreVisitor().addExamScore(selectedCourse.getTeacher(),
                                     selectedStudent, selectedCourse.getName(),
-                                    Double.parseDouble(addGradeMenu.partScoreField.getText()));
+                                    Double.parseDouble(addGradeMenu.examScoreField.getText()));
                         }
                     } else {
                         JOptionPane.showMessageDialog(mediator.getCatalogApp(),

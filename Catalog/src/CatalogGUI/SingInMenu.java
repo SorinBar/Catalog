@@ -176,7 +176,7 @@ public class SingInMenu{
 
             if (adminButton.isSelected()) {
                 if (!mediator.getUsersDatabase().getAdminPassword().equals(userPassHash))
-                    JOptionPane.showMessageDialog(mediator.getCatalogApp(), "Invalid Password");
+                    JOptionPane.showMessageDialog(mediator.getCatalogApp(), "Invalid Password!");
                 else
                     mediator.showAdminMenu();
             }
@@ -208,7 +208,7 @@ public class SingInMenu{
                     }
                     else {
                         if (!teacher.getHashPass().equals(userPassHash))
-                            JOptionPane.showMessageDialog(mediator.getCatalogApp(), "Invalid Password");
+                            JOptionPane.showMessageDialog(mediator.getCatalogApp(), "Invalid Password!");
                         else
                             mediator.showTeacherMenu(teacher);
                     }

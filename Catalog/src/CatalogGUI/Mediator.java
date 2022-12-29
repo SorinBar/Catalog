@@ -52,7 +52,6 @@ public class Mediator {
     public NotificationsDatabase getNotificationsDatabase() {
         return notificationsDatabase;
     }
-
     public void showSingInMenu() {
         catalogApp.setTitle("Catalog - Sing In");
         catalogApp.getContentPane().removeAll();

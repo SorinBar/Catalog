@@ -1,6 +1,5 @@
 package CatalogPatterns;
 
-import CatalogAux.Triple;
 import CatalogDatabase.ReadFile;
 import CatalogDatabase.UsersDatabase;
 import CatalogMain.Catalog;
@@ -27,22 +26,6 @@ public class ScoreVisitor implements Visitor{
         partialScores = new HashMap<>();
     }
     @Override
-    public void visit(Teacher teacher) {
-        ArrayList<Tuple<Student, String, Double>> dataList = examScores.get(teacher);
-        if (dataList == null)
-            return;
-        Grade grade;
-        for(Tuple<Student, String, Double> data : dataList) {
-            catalog.getCourse(data.getY()).getGrade(data.getX()).setExamScore(data.getZ());
-            // Grade for notification
-            grade = new Grade();
-            grade.setStudent(data.getX());
-            grade.setCourse(data.getY());
-            grade.setExamScore(data.getZ());
-            catalog.notifyObservers(grade);
-        }
-    }
-    @Override
     public void visit(Assistant assistant) {
         ArrayList<Tuple<Student, String, Double>> dataList = partialScores.get(assistant);
         if (dataList == null)
@@ -57,8 +40,25 @@ public class ScoreVisitor implements Visitor{
             grade.setExamScore(data.getZ());
             catalog.notifyObservers(grade);
         }
+        partialScores.remove(assistant);
     }
-
+    @Override
+    public void visit(Teacher teacher) {
+        ArrayList<Tuple<Student, String, Double>> dataList = examScores.get(teacher);
+        if (dataList == null)
+            return;
+        Grade grade;
+        for(Tuple<Student, String, Double> data : dataList) {
+            catalog.getCourse(data.getY()).getGrade(data.getX()).setExamScore(data.getZ());
+            // Grade for notification
+            grade = new Grade();
+            grade.setStudent(data.getX());
+            grade.setCourse(data.getY());
+            grade.setExamScore(data.getZ());
+            catalog.notifyObservers(grade);
+        }
+        examScores.remove(teacher);
+    }
     public void addExamScore(Teacher teacher, Student student, String course, Double score) {
         Tuple<Student, String, Double> data = new Tuple<>(student, course, score);
         ArrayList<Tuple<Student, String, Double>> dataList = examScores.get(teacher);
@@ -82,25 +82,25 @@ public class ScoreVisitor implements Visitor{
         else
             dataList.add(data);
     }
-    public ArrayList<Triple<Student, String, Double>> getScores(Assistant assistant) {
+    public ArrayList<String> getScoresData(Assistant assistant) {
         ArrayList<Tuple<Student, String, Double>> scores = partialScores.get(assistant);
+        ArrayList<String> scoresData = new ArrayList<>();
         if (scores == null)
-            return null;
-        ArrayList<Triple<Student, String, Double>> scoresAux = new ArrayList<>();
+            return scoresData;
         for (Tuple<Student, String, Double> data : scores) {
-            scoresAux.add(new Triple<>(data.getX(), data.getY(), data.getZ()));
+            scoresData.add(data.getY() + ",  " + data.getX() + ", Score: " + data.getZ());
         }
-        return scoresAux;
+        return scoresData;
     }
-    public ArrayList<Triple<Student, String, Double>> getScores(Teacher teacher) {
+    public ArrayList<String> getScoresData(Teacher teacher) {
         ArrayList<Tuple<Student, String, Double>> scores = examScores.get(teacher);
+        ArrayList<String> scoresData = new ArrayList<>();
         if (scores == null)
-            return null;
-        ArrayList<Triple<Student, String, Double>> scoresAux = new ArrayList<>();
+            return scoresData;
         for (Tuple<Student, String, Double> data : scores) {
-            scoresAux.add(new Triple<>(data.getX(), data.getY(), data.getZ()));
+            scoresData.add(data.getY() + ",  " + data.getX() + ", Score: " + data.getZ());
         }
-        return scoresAux;
+        return scoresData;
     }
 
     public void load(UsersDatabase usersDatabase){
