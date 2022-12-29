@@ -178,17 +178,30 @@ public class CourseMenu {
                 }
             }
             if (actionEvent.getSource() == gradeButton) {
-                // To Do
-                System.out.println(selectedStudent);
-                System.out.println(selectedCourse.getName());
-
-                addGradeMenu.update();
+                addGradeMenu.update(selectedCourse.getGrade(selectedStudent));
                 int result = JOptionPane.showConfirmDialog(mediator.getCatalogApp(), addGradeMenu.gradePanel,
                         "Add Grade", JOptionPane.OK_CANCEL_OPTION,
                         JOptionPane.PLAIN_MESSAGE);
 
                 if (result == JOptionPane.OK_OPTION) {
-                    System.out.println("added grade");
+                    if (addGradeMenu.isInputValid()) {
+                        if (addGradeMenu.partScoreField.isEditable() &&
+                                !addGradeMenu.partScoreField.getText().isBlank()) {
+                            mediator.getScoreVisitor().addPartialScore(selectedGroup.getAssistant(),
+                                    selectedStudent, selectedCourse.getName(),
+                                    Double.parseDouble(addGradeMenu.partScoreField.getText()));
+                        }
+                        if (addGradeMenu.examScoreField.isEditable() &&
+                                !addGradeMenu.examScoreField.getText().isBlank()) {
+                            mediator.getScoreVisitor().addExamScore(selectedCourse.getTeacher(),
+                                    selectedStudent, selectedCourse.getName(),
+                                    Double.parseDouble(addGradeMenu.partScoreField.getText()));
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(mediator.getCatalogApp(),
+                                "Partial score ∈ [0, 6]!\nExam score ∈ [0, 4]!",
+                                "Wrong Input", JOptionPane.ERROR_MESSAGE);
+                    }
                 }
 
             }
@@ -296,19 +309,77 @@ public class CourseMenu {
     }
     private class AddGradeMenu {
         private final JPanel gradePanel;
+        private final JTextField partScoreField;
+        private final JTextField examScoreField;
 
         private AddGradeMenu() {
             gradePanel = new JPanel();
+            partScoreField = new JTextField();
+            examScoreField = new JTextField();
 
-            update();
+            // Partial panel
+            JPanel partPanel = new JPanel(new BorderLayout());
+            partPanel.add(new JLabel("Partial:"), BorderLayout.WEST);
+            partPanel.add(partScoreField, BorderLayout.EAST);
+            partScoreField.setPreferredSize(new Dimension(150, 20));
+
+            // Exam panel
+            JPanel examPanel = new JPanel(new BorderLayout());
+            examPanel.add(new JLabel("Exam:"), BorderLayout.WEST);
+            examPanel.add(examScoreField, BorderLayout.EAST);
+            examScoreField.setPreferredSize(new Dimension(150, 20));
 
             // Main panel
-            gradePanel.setLayout(new BoxLayout(gradePanel, BoxLayout.X_AXIS));
-            gradePanel.add(new JLabel("test"));
+            gradePanel.setLayout(new BoxLayout(gradePanel, BoxLayout.Y_AXIS));
+            gradePanel.add(partPanel);
+            gradePanel.add(examPanel);
         }
 
-        private void update() {
+        private void update(Grade studGrade) {
+            if (studGrade.getPartialScore() != null) {
+                partScoreField.setText(studGrade.getPartialScore().toString());
+                partScoreField.setEditable(false);
+                partScoreField.setForeground(Color.LIGHT_GRAY);
+            }
+            else {
+                partScoreField.setText("");
+                partScoreField.setEditable(true);
+                partScoreField.setForeground(Color.BLACK);
+            }
+            if (studGrade.getExamScore() != null) {
+                examScoreField.setText(studGrade.getExamScore().toString());
+                examScoreField.setEditable(false);
+                examScoreField.setForeground(Color.LIGHT_GRAY);
+            }
+            else {
+                examScoreField.setText("");
+                examScoreField.setEditable(true);
+                examScoreField.setForeground(Color.BLACK);
+            }
+        }
+        private boolean isInputValid() {
+            double partScore = 0.0;
+            double examScore = 0.0;
+            if (partScoreField.isEditable() && !partScoreField.getText().isBlank()) {
+                try {
+                    partScore = Double.parseDouble(partScoreField.getText());
+                } catch (Exception e) {
+                    return false;
+                }
+            }
+            if (examScoreField.isEditable() && !examScoreField.getText().isBlank()) {
+                try {
+                    examScore = Double.parseDouble(examScoreField.getText());
+                } catch (Exception e) {
+                    return false;
+                }
+            }
+            if (partScore < 0.0 || 6.0 < partScore)
+                return false;
+            if (examScore < 0.0 || 4.0 < examScore)
+                return false;
 
+            return true;
         }
     }
 }
