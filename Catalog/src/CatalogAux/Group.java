@@ -1,6 +1,7 @@
 package CatalogAux;
 
 import CatalogUsers.*;
+import org.w3c.dom.ls.LSOutput;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -22,6 +23,7 @@ public class Group extends ArrayList<Student> {
         this.ID = ID;
         this.assistant = assistant;
         comp = null;
+        studentsData = new ArrayList<>();
     }
     public void setAssistant(Assistant assistant) {
         this.assistant = assistant;
@@ -46,6 +48,7 @@ public class Group extends ArrayList<Student> {
         boolean status = super.add(student);
         if (status) {
             studentsData.add(student.toString());
+            Collections.sort(studentsData);
             if (comp != null)
                 sort(comp);
         }

@@ -15,6 +15,7 @@ public abstract class Course {
     public HashMap<String, Group> groups;
     private ScoreStrategy strategy;
     private Snapshot snapshot;
+    private ArrayList<String> groupsData;
 
     protected Course(CourseBuilder builder) {
         this.name = builder.name;
@@ -25,6 +26,7 @@ public abstract class Course {
         groups = new HashMap<String, Group>();
         snapshot = new Snapshot();
         strategy = null;
+        groupsData = new ArrayList<>();
     }
     public void setName(String name) {
         this.name = name;
@@ -52,6 +54,9 @@ public abstract class Course {
         assistants.add(assistant);
     }
     public void addStudent(String ID, Student student) {
+        for (Map.Entry <String, Group> entry : groups.entrySet())
+            if (entry.getValue().contains(student))
+                return;
         Group reqGroup = (Group) (groups.get(ID));
         if (reqGroup == null)
             return;
@@ -61,16 +66,22 @@ public abstract class Course {
         if (groups.get(group.getID()) != null)
             return;
         groups.put(group.getID(), group);
+        groupsData.add(group.getID());
+        Collections.sort(groupsData);
     }
     public void addGroup(String ID, Assistant assistant) {
         if (groups.get(ID) != null)
             return;
         groups.put(ID, new Group(ID, assistant));
+        groupsData.add(ID);
+        Collections.sort(groupsData);
     }
     public void addGroup(String ID, Assistant assist, Comparator<Student> comp) {
         if (groups.get(ID) != null)
             return;
         groups.put(ID, new Group(ID, assist, comp));
+        groupsData.add(ID);
+        Collections.sort(groupsData);
     }
     public Grade getGrade(Student student) {
         for (Grade grade : grades) {
@@ -123,10 +134,7 @@ public abstract class Course {
         return groups.get(groupID);
     }
     public ArrayList<String> getGroupsData() {
-        ArrayList<String> groupData = new ArrayList<>();
-        for (Map.Entry<String, Group> entry : groups.entrySet())
-            groupData.add(entry.getKey());
-        return groupData;
+        return groupsData;
     }
 
 

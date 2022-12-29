@@ -15,6 +15,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.util.Comparator;
 
 public class CourseMenu {
     Mediator mediator;
@@ -144,7 +145,6 @@ public class CourseMenu {
                         assistantCnp = assistantCnp.substring(0, 13);
                         selectedCourse.addGroup(addGroupMenu.groupIdField.getText(),
                                 mediator.getUsersDatabase().getAssistant(assistantCnp));
-
                         // Update Groups
                         groupsBox.removeAllItems();
                         for (String groupID : selectedCourse.getGroupsData())
@@ -171,7 +171,6 @@ public class CourseMenu {
                             grade.setCourse(selectedCourse.getName());
                             grade.setStudent(student);
                             selectedCourse.addGrade(grade);
-                            //selectedCourse.print();
                             // Update students list
                             studentsModel.clear();
                             studentsModel.addAll(selectedGroup.getStudentsData());
