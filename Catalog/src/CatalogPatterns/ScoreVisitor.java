@@ -1,11 +1,10 @@
 package CatalogPatterns;
 
+import CatalogAux.Triple;
 import CatalogDatabase.ReadFile;
 import CatalogDatabase.UsersDatabase;
-import CatalogGUI.Mediator;
 import CatalogMain.Catalog;
 import CatalogAux.Grade;
-import CatalogCourses.Course;
 import CatalogUsers.Assistant;
 import CatalogUsers.Student;
 import CatalogUsers.Teacher;
@@ -18,14 +17,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ScoreVisitor implements Visitor{
-    private Catalog catalog;
-    private HashMap<Teacher, ArrayList<Tuple<Student, String, Double>>> examScores;
-    private HashMap<Assistant, ArrayList<Tuple<Student, String, Double>>> partialScores;
+    private final Catalog catalog;
+    private final HashMap<Teacher, ArrayList<Tuple<Student, String, Double>>> examScores;
+    private final HashMap<Assistant, ArrayList<Tuple<Student, String, Double>>> partialScores;
     public final String path = "src/CatalogDatabase/Database/unverifiedGrades.txt";
     public ScoreVisitor(Catalog catalog) {
         this.catalog = catalog;
-        examScores = new HashMap<Teacher, ArrayList<Tuple<Student, String, Double>>>();
-        partialScores = new HashMap<Assistant, ArrayList<Tuple<Student, String, Double>>>();
+        examScores = new HashMap<>();
+        partialScores = new HashMap<>();
     }
     @Override
     public void visit(Teacher teacher) {
@@ -83,10 +82,27 @@ public class ScoreVisitor implements Visitor{
         else
             dataList.add(data);
     }
-
-    public HashMap<Assistant, ArrayList<Tuple<Student, String, Double>>> getPartialScores() {
-        return partialScores;
+    public ArrayList<Triple<Student, String, Double>> getScores(Assistant assistant) {
+        ArrayList<Tuple<Student, String, Double>> scores = partialScores.get(assistant);
+        if (scores == null)
+            return null;
+        ArrayList<Triple<Student, String, Double>> scoresAux = new ArrayList<>();
+        for (Tuple<Student, String, Double> data : scores) {
+            scoresAux.add(new Triple<>(data.getX(), data.getY(), data.getZ()));
+        }
+        return scoresAux;
     }
+    public ArrayList<Triple<Student, String, Double>> getScores(Teacher teacher) {
+        ArrayList<Tuple<Student, String, Double>> scores = examScores.get(teacher);
+        if (scores == null)
+            return null;
+        ArrayList<Triple<Student, String, Double>> scoresAux = new ArrayList<>();
+        for (Tuple<Student, String, Double> data : scores) {
+            scoresAux.add(new Triple<>(data.getX(), data.getY(), data.getZ()));
+        }
+        return scoresAux;
+    }
+
     public void load(UsersDatabase usersDatabase){
         ArrayList<String> lines = ReadFile.fromPath(path);
         if (lines.size() == 0) {

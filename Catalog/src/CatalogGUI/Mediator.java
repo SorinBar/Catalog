@@ -5,6 +5,7 @@ import CatalogDatabase.NotificationsDatabase;
 import CatalogDatabase.UsersDatabase;
 import CatalogMain.Catalog;
 import CatalogPatterns.ScoreVisitor;
+import CatalogUsers.Teacher;
 
 import java.awt.*;
 
@@ -19,6 +20,7 @@ public class Mediator {
     private UsersMenu usersMenu;
     private CatalogMenu catalogMenu;
     private CourseMenu courseMenu;
+    private TeacherMenu teacherMenu;
 
     public Mediator(CatalogApp catalogApp) {
         this.catalogApp = catalogApp;
@@ -33,6 +35,7 @@ public class Mediator {
         usersMenu = new UsersMenu(this);
         catalogMenu = new CatalogMenu(this);
         courseMenu = new CourseMenu(this);
+        teacherMenu = new TeacherMenu(this);
     }
     public Catalog getCatalog() {
         return catalog;
@@ -87,6 +90,15 @@ public class Mediator {
         catalogApp.setTitle("Catalog");
         catalogApp.getContentPane().removeAll();
         catalogApp.getContentPane().add(courseMenu.getPanel(), BorderLayout.CENTER);
+        catalogApp.getContentPane().doLayout();
+        catalogApp.update(catalogApp.getGraphics());
+        catalogApp.pack();
+    }
+    public void showTeacherMenu(Teacher teacher) {
+        teacherMenu.setTeacher(teacher);
+        catalogApp.setTitle("Catalog - Grades");
+        catalogApp.getContentPane().removeAll();
+        catalogApp.getContentPane().add(teacherMenu.getPanel(), BorderLayout.CENTER);
         catalogApp.getContentPane().doLayout();
         catalogApp.update(catalogApp.getGraphics());
         catalogApp.pack();

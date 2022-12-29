@@ -1,5 +1,6 @@
 package CatalogGUI;
 
+import CatalogUsers.Teacher;
 import Encryption.Digest;
 
 import javax.swing.*;
@@ -178,6 +179,40 @@ public class SingInMenu{
                     JOptionPane.showMessageDialog(mediator.getCatalogApp(), "Invalid Password");
                 else
                     mediator.showAdminMenu();
+            }
+            if (teacherButton.isSelected()) {
+                Teacher teacher = mediator.getUsersDatabase().getTeacher(userCNP);
+                if (teacher == null) {
+                    JOptionPane.showMessageDialog(mediator.getCatalogApp(),
+                            "Teacher CNP not found!",
+                            "Error", JOptionPane.ERROR_MESSAGE);
+                }
+                else {
+                    // Teacher found
+                    if (teacher.getHashPass().equals("null")) {
+                        String password = JOptionPane.showInputDialog(mediator.getCatalogApp(),
+                                "Enter new password!", "New Account", JOptionPane.PLAIN_MESSAGE);
+                        if (password != null) {
+                            if (password.isBlank())
+                                JOptionPane.showMessageDialog(mediator.getCatalogApp(),
+                                        "Password should not be empty!", "Error",
+                                        JOptionPane.ERROR_MESSAGE);
+                            else {
+                                password = Digest.SHA256(password);
+                                teacher.setHashPass(password);
+                                JOptionPane.showMessageDialog(mediator.getCatalogApp(),
+                                        "Password updated!", "Success",
+                                        JOptionPane.INFORMATION_MESSAGE);
+                            }
+                        }
+                    }
+                    else {
+                        if (!teacher.getHashPass().equals(userPassHash))
+                            JOptionPane.showMessageDialog(mediator.getCatalogApp(), "Invalid Password");
+                        else
+                            mediator.showTeacherMenu(teacher);
+                    }
+                }
             }
         }
     }
