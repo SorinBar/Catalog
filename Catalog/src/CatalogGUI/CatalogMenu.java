@@ -13,7 +13,7 @@ import java.awt.event.ActionListener;
 
 public class CatalogMenu {
 
-    Mediator mediator;
+    private Mediator mediator;
     private final JPanel panel;
     private final JScrollPane coursesPane;
     private final JList<String> coursesList;

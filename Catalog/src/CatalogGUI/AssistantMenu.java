@@ -1,21 +1,21 @@
 package CatalogGUI;
 
-import CatalogUsers.Teacher;
+import CatalogUsers.Assistant;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class TeacherMenu {
+public class AssistantMenu {
     private Mediator mediator;
     private final JPanel panel;
-    private Teacher teacher;
+    private Assistant assistant;
     private final JList<String> gradesList;
     private final DefaultListModel<String> gradesModel;
     private final JScrollPane gradesPane;
     private final JButton validateGradesButton;
 
-    public TeacherMenu(Mediator mediator) {
+    public AssistantMenu(Mediator mediator) {
         this.mediator = mediator;
         panel = new JPanel();
         gradesModel = new DefaultListModel<String>();
@@ -26,9 +26,9 @@ public class TeacherMenu {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 if (actionEvent.getSource() == validateGradesButton) {
-                    teacher.accept(mediator.getScoreVisitor());
+                    assistant.accept(mediator.getScoreVisitor());
                     gradesModel.clear();
-                    gradesModel.addAll(mediator.getScoreVisitor().getScoresData(teacher));
+                    gradesModel.addAll(mediator.getScoreVisitor().getScoresData(assistant));
                 }
             }
         });
@@ -46,10 +46,10 @@ public class TeacherMenu {
     public JPanel getPanel() {
         return panel;
     }
-    public void setTeacher(Teacher teacher) {
-        this.teacher = teacher;
+    public void setAssistant(Assistant assistant) {
+        this.assistant = assistant;
         gradesModel.clear();
-        gradesModel.addAll(mediator.getScoreVisitor().getScoresData(teacher));
+        gradesModel.addAll(mediator.getScoreVisitor().getScoresData(assistant));
     }
 
 }

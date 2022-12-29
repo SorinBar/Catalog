@@ -14,7 +14,7 @@ import java.awt.event.ActionListener;
 
 
 public class CourseMenu {
-    Mediator mediator;
+    private Mediator mediator;
     private final JPanel panel;
     private final JScrollPane studentsPane;
     private final JList<String> studentsList;

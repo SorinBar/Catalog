@@ -88,7 +88,7 @@ public class ScoreVisitor implements Visitor{
         if (scores == null)
             return scoresData;
         for (Tuple<Student, String, Double> data : scores) {
-            scoresData.add(data.getY() + ",  " + data.getX() + ", Score: " + data.getZ());
+            scoresData.add(data.getY() + ",  " + data.getX() + ", Partial score: " + data.getZ());
         }
         return scoresData;
     }
@@ -98,7 +98,7 @@ public class ScoreVisitor implements Visitor{
         if (scores == null)
             return scoresData;
         for (Tuple<Student, String, Double> data : scores) {
-            scoresData.add(data.getY() + ",  " + data.getX() + ", Score: " + data.getZ());
+            scoresData.add(data.getY() + ",  " + data.getX() + ", Exam score: " + data.getZ());
         }
         return scoresData;
     }
