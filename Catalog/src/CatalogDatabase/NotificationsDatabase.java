@@ -2,11 +2,17 @@ package CatalogDatabase;
 
 import CatalogAux.Grade;
 import CatalogPatterns.Notification;
-import CatalogUsers.Parent;
-import CatalogUsers.User;
+import CatalogPatterns.ScoreVisitor;
+import CatalogUsers.Assistant;
+import CatalogUsers.Student;
+import CatalogUsers.Teacher;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 public class NotificationsDatabase {
     UsersDatabase usersDatabase;
@@ -63,10 +69,33 @@ public class NotificationsDatabase {
                 addNotification(parentCnp, notification);
             }
         }
-
-        System.out.println(notifications);
     }
     public void update() {
-        System.out.println("update");
+        try {
+            FileWriter fileWriter = new FileWriter(path);
+            PrintWriter printWriter = new PrintWriter(fileWriter);
+            Grade grade;
+            printWriter.println(notifications.size());
+            for(Map.Entry<String, ArrayList<Notification>> entry : notifications.entrySet()) {
+                printWriter.println(entry.getKey());
+                printWriter.println(entry.getValue().size());
+                for (Notification notification : entry.getValue()) {
+                    grade = notification.getGrade();
+                    printWriter.println(grade.getStudent().getCNP());
+                    printWriter.println(grade.getCourse());
+                    printWriter.println(grade.getPartialScore());
+                    printWriter.println(grade.getExamScore());
+                    printWriter.println(notification.getDate());
+                }
+            }
+
+            printWriter.close();
+        } catch (IOException e) {
+            System.out.println("Error updating notifications!");
+        }
+    }
+    // Testing
+    public void print() {
+        System.out.println(notifications);
     }
 }

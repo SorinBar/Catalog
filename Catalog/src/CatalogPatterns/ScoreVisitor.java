@@ -34,6 +34,8 @@ public class ScoreVisitor implements Visitor{
             return;
         Grade grade;
         for(Tuple<Student, String, Double> data : dataList) {
+            catalog.getCourse(data.getY()).getGrade(data.getX()).setExamScore(data.getZ());
+            // Grade for notification
             grade = new Grade();
             grade.setStudent(data.getX());
             grade.setCourse(data.getY());
@@ -48,6 +50,8 @@ public class ScoreVisitor implements Visitor{
             return;
         Grade grade;
         for(Tuple<Student, String, Double> data : dataList) {
+            catalog.getCourse(data.getY()).getGrade(data.getX()).setPartialScore(data.getZ());
+            // Grade for notification
             grade = new Grade();
             grade.setStudent(data.getX());
             grade.setCourse(data.getY());
@@ -116,7 +120,7 @@ public class ScoreVisitor implements Visitor{
         index++;
         // Assistants
         assistantsNumber = Integer.parseInt(lines.get(index++));
-        for (int i = 0; i < teachersNumber; i++) {
+        for (int i = 0; i < assistantsNumber; i++) {
             cnp = lines.get(index++);
             assistant = usersDatabase.getAssistant(cnp);
             studentsNumber = Integer.parseInt(lines.get(index++));

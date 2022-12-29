@@ -21,5 +21,6 @@ public class Parent extends User implements Observer {
         System.out.print(notification.getDate() + ": ");
         System.out.println(notification.getGrade().getTotal());
         // Salvam notificarea
+        // in notifications database
     }
 }

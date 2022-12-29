@@ -2,6 +2,7 @@ import CatalogDatabase.*;
 import CatalogGUI.CatalogApp;
 import CatalogGUI.Mediator;
 import CatalogMain.Catalog;
+import CatalogUsers.Student;
 
 import javax.sql.rowset.RowSetMetaDataImpl;
 
@@ -73,7 +74,7 @@ public class SetUp {
         loadScoreDatabase();
         loadNotificationsDatabase();
         createAppFrames();
-        //startGUI();
+        startGUI();
     }
     public static void main(String[] args) {
         SetUp setUp = new SetUp();
