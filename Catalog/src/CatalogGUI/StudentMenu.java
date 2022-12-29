@@ -28,10 +28,8 @@ public class StudentMenu {
     }
     public void setStudent(Student student) {
         this.student = student;
-        System.out.println(student);
         gradesModel.clear();
-        // Add grades
-        //gradesModel.addAll();
+        gradesModel.addAll(mediator.getCatalog().getStudentData(student));
     }
 
 }

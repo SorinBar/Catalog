@@ -5,6 +5,7 @@ import CatalogCourses.Course;
 import CatalogPatterns.Notification;
 import CatalogPatterns.Observer;
 import CatalogPatterns.Subject;
+import CatalogUsers.Student;
 
 import java.util.*;
 
@@ -45,6 +46,23 @@ public class Catalog implements Subject {
     public ArrayList<String> getCoursesNames() {
         return coursesNames;
     }
+    public ArrayList<String> getStudentData(Student student) {
+        ArrayList<String> studentData = new ArrayList<>();
+        Grade grade;
+        String data;
+        for (Map.Entry<String, Course> entry : courses.entrySet()) {
+            grade = entry.getValue().getGrade(student);
+            if (grade != null) {
+                data = "Course: " + entry.getValue().getName();
+                data += ", Partial: " + grade.getPartialScore();
+                data += ", Exam: " + grade.getExamScore();
+                studentData.add(data);
+            }
+        }
+
+        return  studentData;
+    }
+
 
     // Testing
     public void print() {
