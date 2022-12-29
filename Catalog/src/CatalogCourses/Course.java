@@ -119,6 +119,17 @@ public abstract class Course {
         for(Grade grade : oldGrades)
             grades.add((Grade) grade.clone());
     }
+    public Group getGroup(String groupID) {
+        return groups.get(groupID);
+    }
+    public ArrayList<String> getGroupsData() {
+        ArrayList<String> groupData = new ArrayList<>();
+        for (Map.Entry<String, Group> entry : groups.entrySet())
+            groupData.add(entry.getKey());
+        return groupData;
+    }
+
+
     public static abstract class CourseBuilder {
         private String name;
         private Teacher teacher;

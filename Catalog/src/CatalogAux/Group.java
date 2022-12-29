@@ -33,6 +33,13 @@ public class Group extends ArrayList<Student> {
     public String getID() {
         return ID;
     }
+    public ArrayList<String> getStudentsData() {
+        ArrayList<String> studentsData = new ArrayList<>();
+        for (Student student : this) {
+            studentsData.add(student.toString());
+        }
+        return studentsData;
+    }
     @Override
     public boolean add(Student student) {
         if (contains(student))

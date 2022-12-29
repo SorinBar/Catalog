@@ -29,7 +29,12 @@ public class CourseMenu {
     private final JButtonClick buttonClick;
     private Course selectedCourse;
     private Group selectedGroup;
-    private final AddGroupMenu addGroupMenu;
+    private Student selectedStudent;
+    private final JComboBox<String> groupsBox;
+    private final JButton groupsButton;
+    private final JLabel assistantLabel;
+    private final JButton assistantButton;
+    private final JComboBoxSelect jComboBoxSelect;
 
     public CourseMenu(Mediator mediator) {
         // Set UP
@@ -44,11 +49,18 @@ public class CourseMenu {
         removeButton = new JButton("Remove");
         backButton = new JButton("Go Back");
         buttonClick = new JButtonClick();
+        selectedCourse = null;
         selectedGroup = null;
-        addGroupMenu = new AddGroupMenu();
+        selectedStudent = null;
+        groupsBox = new JComboBox<String>();
+        groupsButton = new JButton("Add Group");
+        assistantLabel = new JLabel("Assistant: -");
+        assistantButton = new JButton("Set Assistant");
+        jComboBoxSelect = new JComboBoxSelect();
 
-        studentsModel.addAll(mediator.getCatalog().getCoursesNames());
         studentsList.addListSelectionListener(jListSelect);
+        groupsBox.addActionListener(jComboBoxSelect);
+        groupsButton.addActionListener(buttonClick);
 
         // Font
         Font titleFont = new Font("Open Sans", Font.BOLD, 16);
@@ -57,9 +69,25 @@ public class CourseMenu {
         JPanel up = new JPanel();
         up.setLayout(new BoxLayout(up, BoxLayout.X_AXIS));
 
-        JLabel titleLabel = new JLabel("Courses");
+        JLabel titleLabel = new JLabel("Groups");
         titleLabel.setFont(titleFont);
         up.add(titleLabel);
+
+        // Groups panel
+        JPanel groupsPanel = new JPanel();
+        groupsPanel.setLayout(new BoxLayout(groupsPanel, BoxLayout.X_AXIS));
+        groupsPanel.add(groupsBox);
+        groupsPanel.add(groupsButton);
+
+        // Assistant panel
+        JPanel aPanel = new JPanel();
+        aPanel.setLayout(new BoxLayout(aPanel, BoxLayout.X_AXIS));
+        aPanel.add(assistantLabel);
+
+        // Students panel
+        JPanel studPanel = new JPanel();
+        studPanel.setLayout(new BorderLayout());
+        studPanel.add(studentsPane, BorderLayout.CENTER);
 
         // Down panel
         JPanel down = new JPanel();
@@ -81,147 +109,72 @@ public class CourseMenu {
         // Main panel
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         panel.add(up);
-        panel.add(studentsPane);
+        panel.add(groupsPanel);
+        panel.add(aPanel);
+        panel.add(studPanel);
         panel.add(down);
-    }
-    public void updateCourses() {
-
-    }
-    public void updateTeachers() {
-        // Update current teachers
-        addGroupMenu.teacherBox.removeAllItems();
-        for (String teacherData : mediator.getUsersDatabase().getTeachersData())
-            addGroupMenu.teacherBox.addItem(teacherData);
     }
     public void setSelectedCourse(Course course) {
         selectedCourse = course;
+        groupsBox.removeAllItems();
+        for (String groupID : course.getGroupsData())
+            groupsBox.addItem(groupID);
     }
     public JPanel getPanel() {
-        updateTeachers();
         return panel;
     }
 
     private class JButtonClick implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
+            if (actionEvent.getSource() == groupsButton) {
+                System.out.println("adauga grupa");
+            }
             if (actionEvent.getSource() == addButton) {
-                int option = JOptionPane.showConfirmDialog(mediator.getCatalogApp(), addGroupMenu.addPanel,
-                        "Add Course", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-                if (option == JOptionPane.YES_OPTION) {
-                    if (addGroupMenu.nameField.getText().isBlank()) {
-                        JOptionPane.showMessageDialog(mediator.getCatalogApp(),
-                                "Course name should not be empty!", "Error",
-                                JOptionPane.ERROR_MESSAGE);
-                    }
-                    else {
-                        Course newCourse;
-                        String courseName;
-                        String teacherCNP;
-                        int credit;
-
-                        courseName = addGroupMenu.nameField.getText();
-                        credit = addGroupMenu.creditBox.getSelectedIndex() + 1;
-                        teacherCNP = ((String) (addGroupMenu.teacherBox.getSelectedItem()))
-                                .substring(0, 13);
-
-                        if (addGroupMenu.typeBox.getSelectedIndex() == 0) {
-                            newCourse = new FullCourse.FullCourseBuilder(courseName)
-                                    .teacher(mediator.getUsersDatabase().getTeacher(teacherCNP))
-                                    .credit(credit)
-                                    .build();
-                        }
-                        else {
-                            newCourse = new PartialCourse.PartialCourseBuilder(courseName)
-                                    .teacher(mediator.getUsersDatabase().getTeacher(teacherCNP))
-                                    .credit(credit)
-                                    .build();
-                        }
-                        mediator.getCatalog().addCourse(newCourse);
-                        // Update courses
-                        studentsModel.clear();
-                        studentsModel.addAll(mediator.getCatalog().getCoursesNames());
-                    }
-                }
-                addGroupMenu.refresh();
+                System.out.println("add");
+                System.out.println(selectedCourse);
             }
             if (actionEvent.getSource() == editButton) {
-                System.out.println("edit");
+                System.out.println("edit Course");
             }
             if (actionEvent.getSource() == removeButton) {
                 int option = JOptionPane.showConfirmDialog(mediator.getCatalogApp(),
                         "Remove " + selectedCourse.getName() + "?",
                         "Confirm", JOptionPane.YES_NO_OPTION);
                 if (option == JOptionPane.YES_OPTION) {
-                    mediator.getCatalog().removeCourse(selectedCourse);
-                    // Update courses
-                    studentsModel.clear();
-                    studentsModel.addAll(mediator.getCatalog().getCoursesNames());
-                    // Reset buttons
-                    editButton.setEnabled(false);
-                    removeButton.setEnabled(false);
+                    System.out.println("deleted");
                 }
             }
             if (actionEvent.getSource() == backButton) {
-                mediator.showAdminMenu();
+                mediator.showCatalogMenu();
             }
         }
     }
-
     private class JListSelect implements ListSelectionListener {
         @Override
         public void valueChanged(ListSelectionEvent listSelectionEvent) {
             if (!listSelectionEvent.getValueIsAdjusting()) {
-                selectedCourse = mediator.getCatalog().getCourse(studentsList.getSelectedValue());
-                editButton.setEnabled(true);
-                removeButton.setEnabled(true);
+                if (studentsList.getSelectedValue() != null)
+                    selectedStudent = mediator.getUsersDatabase()
+                            .getStudent(studentsList.getSelectedValue().substring(0, 13));
+                else
+                    selectedStudent = null;
             }
         }
     }
-
-    private class AddGroupMenu {
-        private JPanel addPanel;
-
-        private final JComboBox<String> typeBox;
-        private final JComboBox<Integer> creditBox;
-        private final JComboBox<String> teacherBox;
-        private final JTextField nameField;
-        private final String[] types = {"Full Course", "Partial Course"};
-        private final Integer[] credits = {1, 2, 3, 4, 5, 6, 7, 8, 9};
-
-        private AddGroupMenu() {
-            addPanel = new JPanel();
-            typeBox = new JComboBox<>(types);
-            teacherBox = new JComboBox<>(mediator.getUsersDatabase().getTeachersData().toArray(new String[0]));
-            nameField = new JTextField();
-            creditBox = new JComboBox<>(credits);
-
-            addPanel.setLayout(new BoxLayout(addPanel, BoxLayout.Y_AXIS));
-            addPanel.setPreferredSize(new Dimension(280, 180));
-
-            JPanel typePanel = new JPanel(new BorderLayout());
-            JPanel creditPanel = new JPanel(new BorderLayout());
-            JPanel teacherBoxPanel = new JPanel(new BorderLayout());
-            JPanel namePanel = new JPanel(new BorderLayout());
-
-            typePanel.add(new JLabel("Type:"), BorderLayout.WEST);
-            creditPanel.add(new JLabel("Credit:"), BorderLayout.WEST);
-            teacherBoxPanel.add(new JLabel("Teacher:"), BorderLayout.WEST);
-            namePanel.add(new JLabel("Course name:"), BorderLayout.WEST);
-
-            addPanel.add(typePanel);
-            addPanel.add(typeBox);
-            addPanel.add(creditPanel);
-            addPanel.add(creditBox);
-            addPanel.add(teacherBoxPanel);
-            addPanel.add(teacherBox);
-            addPanel.add(namePanel);
-            addPanel.add(nameField);
-        }
-        private void refresh() {
-            typeBox.setSelectedIndex(0);
-            creditBox.setSelectedIndex(0);
-            teacherBox.setSelectedIndex(0);
-            nameField.setText("");
+    private class JComboBoxSelect implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent actionEvent) {
+            studentsModel.clear();
+            if (groupsBox.getSelectedIndex() == -1) {
+                selectedGroup = null;
+                assistantLabel.setText("Assistant: -");
+            }
+            else {
+                selectedGroup = selectedCourse.getGroup((String)groupsBox.getSelectedItem());
+                assistantLabel.setText("Assistant: " + selectedGroup.getAssistant());
+                studentsModel.addAll(selectedGroup.getStudentsData());
+            }
         }
     }
 }

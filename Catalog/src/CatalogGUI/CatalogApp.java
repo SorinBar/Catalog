@@ -28,8 +28,7 @@ public class CatalogApp extends JFrame {
         });
     }
     public void startGUI() {
-        mediator.showCourseMenu(mediator.getCatalog().getCourse("PO"));
-        //mediator.showSingInMenu();
+        mediator.showCatalogMenu();
         setVisible(true);
     }
     public Mediator getMediator() {
