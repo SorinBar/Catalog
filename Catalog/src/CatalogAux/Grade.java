@@ -69,6 +69,6 @@ public class Grade implements Comparable, Cloneable{
         else
             exam = examScore.toString();
 
-        return "Grade: " + "partial: " + partialScore + ", exam: " + examScore;
+        return "Grade: " + "partial: " + partialScore + ", exam: " + examScore + ", Student: " + student;
     }
 }

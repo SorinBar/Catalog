@@ -10,7 +10,7 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 
 public class UsersMenu{
-    Mediator mediator;
+    private Mediator mediator;
     private final JPanel panel;
     private final JRadioButton teacherButton;
     private final JRadioButton assistantButton;

@@ -9,7 +9,7 @@ import java.awt.event.ActionListener;
 
 public class AdminMenu{
 
-    Mediator mediator;
+    private Mediator mediator;
     private final JPanel panel;
     private final JButton coursesButton;
     private final JButton usersButton;

@@ -10,11 +10,17 @@ public class Parent extends User implements Observer {
     @Override
     public void update(Notification notification) {
         Student stud = notification.getGrade().getStudent();
+        if (stud.getFather() == null)
+            return;
+        if (stud.getMother() == null)
+            return;
         if (!stud.getFather().equals(this))
             return;
         if (!stud.getMother().equals(this))
             return;
         System.out.print(notification.getDate() + ": ");
-        System.out.println(notification.getGrade().getTotal());
+        System.out.println(notification.getGrade());
+        // Salvam notificarea
+        // in notifications database
     }
 }

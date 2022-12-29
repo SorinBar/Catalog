@@ -13,7 +13,7 @@ import java.awt.event.ActionListener;
 
 public class CatalogMenu {
 
-    Mediator mediator;
+    private Mediator mediator;
     private final JPanel panel;
     private final JScrollPane coursesPane;
     private final JList<String> coursesList;
@@ -89,6 +89,7 @@ public class CatalogMenu {
         for (String teacherData : mediator.getUsersDatabase().getTeachersData())
             addCourseMenu.teacherBox.addItem(teacherData);
     }
+
     public JPanel getPanel() {
         updateTeachers();
         return panel;
@@ -106,7 +107,7 @@ public class CatalogMenu {
                                 "Course name should not be empty!", "Error",
                                 JOptionPane.ERROR_MESSAGE);
                     }
-                    else {
+                    else if (addCourseMenu.teacherBox.getSelectedIndex() != -1){
                         Course newCourse;
                         String courseName;
                         String teacherCNP;
@@ -138,8 +139,7 @@ public class CatalogMenu {
                 addCourseMenu.refresh();
             }
             if (actionEvent.getSource() == editButton) {
-                // To Do
-                System.out.println("edit");
+                mediator.showCourseMenu(selectedCourse);
             }
             if (actionEvent.getSource() == removeButton) {
                 int option = JOptionPane.showConfirmDialog(mediator.getCatalogApp(),
@@ -214,7 +214,8 @@ public class CatalogMenu {
         private void refresh() {
             typeBox.setSelectedIndex(0);
             creditBox.setSelectedIndex(0);
-            teacherBox.setSelectedIndex(0);
+            if (teacherBox.getSelectedIndex() != -1)
+                teacherBox.setSelectedIndex(0);
             nameField.setText("");
         }
     }
