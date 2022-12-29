@@ -3,8 +3,6 @@ package CatalogGUI;
 import CatalogAux.Grade;
 import CatalogAux.Group;
 import CatalogCourses.Course;
-import CatalogCourses.FullCourse;
-import CatalogCourses.PartialCourse;
 import CatalogUsers.*;
 
 import javax.swing.*;
@@ -13,9 +11,7 @@ import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
-import java.util.Comparator;
+
 
 public class CourseMenu {
     Mediator mediator;
@@ -39,6 +35,7 @@ public class CourseMenu {
     private final JButton gradeButton;
     private final JButton backButton;
     private final AddStudentMenu addStudentMenu;
+    private final AddGradeMenu addGradeMenu;
 
     public CourseMenu(Mediator mediator) {
         // Set UP
@@ -63,6 +60,7 @@ public class CourseMenu {
         gradeButton = new JButton("Add Grade");
         backButton = new JButton("Go Back");
         addStudentMenu = new AddStudentMenu();
+        addGradeMenu = new AddGradeMenu();
 
         studentsList.addListSelectionListener(jListSelect);
         groupsBox.addActionListener(jComboBoxSelect);
@@ -117,6 +115,7 @@ public class CourseMenu {
         panel.add(down);
     }
     public void setSelectedCourse(Course course) {
+        addButton.setEnabled(false);
         selectedCourse = course;
         groupsBox.removeAllItems();
         for (String groupID : selectedCourse.getGroupsData())
@@ -181,6 +180,17 @@ public class CourseMenu {
             if (actionEvent.getSource() == gradeButton) {
                 // To Do
                 System.out.println(selectedStudent);
+                System.out.println(selectedCourse.getName());
+
+                addGradeMenu.update();
+                int result = JOptionPane.showConfirmDialog(mediator.getCatalogApp(), addGradeMenu.gradePanel,
+                        "Add Grade", JOptionPane.OK_CANCEL_OPTION,
+                        JOptionPane.PLAIN_MESSAGE);
+
+                if (result == JOptionPane.OK_OPTION) {
+                    System.out.println("added grade");
+                }
+
             }
             if (actionEvent.getSource() == backButton) {
                 mediator.showCatalogMenu();
@@ -195,12 +205,11 @@ public class CourseMenu {
                 if (studentsList.getSelectedValue() != null) {
                     selectedStudent = mediator.getUsersDatabase()
                             .getStudent(studentsList.getSelectedValue().substring(0, 13));
-                    System.out.println(selectedStudent);
-                    // enable grade button
+                    gradeButton.setEnabled(true);
                 }
                 else {
                     selectedStudent = null;
-                    // disable grade button
+                    gradeButton.setEnabled(false);
                 }
             }
         }
@@ -212,12 +221,14 @@ public class CourseMenu {
             if (groupsBox.getSelectedIndex() == -1) {
                 selectedGroup = null;
                 assistantLabel.setText("Assistant: -");
+                addButton.setEnabled(false);
             }
             else {
                 selectedGroup = selectedCourse.getGroup((String)groupsBox.getSelectedItem());
                 assistantLabel.setText("Assistant: " + selectedGroup.getAssistant());
                 if (!selectedGroup.isEmpty())
                     studentsModel.addAll(selectedGroup.getStudentsData());
+                addButton.setEnabled(true);
             }
         }
     }
@@ -283,5 +294,21 @@ public class CourseMenu {
                 studentsBox.addItem(data);
         }
     }
+    private class AddGradeMenu {
+        private final JPanel gradePanel;
 
+        private AddGradeMenu() {
+            gradePanel = new JPanel();
+
+            update();
+
+            // Main panel
+            gradePanel.setLayout(new BoxLayout(gradePanel, BoxLayout.X_AXIS));
+            gradePanel.add(new JLabel("test"));
+        }
+
+        private void update() {
+
+        }
+    }
 }
