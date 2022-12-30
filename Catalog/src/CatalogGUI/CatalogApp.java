@@ -13,7 +13,7 @@ public class CatalogApp extends JFrame {
 
     public CatalogApp() {
         mediator = new Mediator(this);
-        setMinimumSize(new Dimension(500, 300));
+        setMinimumSize(new Dimension(600, 300));
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
             @Override

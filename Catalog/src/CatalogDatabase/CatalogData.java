@@ -154,7 +154,8 @@ public class CatalogData {
         }
     }
     public static void addParents(Catalog catalog, UsersDatabase usersDatabase) {
-        for (Map.Entry<String, Parent> entry : usersDatabase.getParents().entrySet())
+        for (Map.Entry<String, Parent> entry : usersDatabase.getParents().entrySet()) {
             catalog.addObserver(entry.getValue());
+        }
     }
 }

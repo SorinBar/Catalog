@@ -315,8 +315,7 @@ public class SingInMenu{
                         if (!parent.getHashPass().equals(userPassHash))
                             JOptionPane.showMessageDialog(mediator.getCatalogApp(), "Invalid Password!");
                         else
-                            // Parent Page
-                            System.out.println("Success " + parent);
+                            mediator.showParentMenu(parent);
                     }
                 }
             }

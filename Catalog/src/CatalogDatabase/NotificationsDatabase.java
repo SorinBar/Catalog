@@ -2,10 +2,8 @@ package CatalogDatabase;
 
 import CatalogAux.Grade;
 import CatalogPatterns.Notification;
-import CatalogPatterns.ScoreVisitor;
-import CatalogUsers.Assistant;
-import CatalogUsers.Student;
-import CatalogUsers.Teacher;
+import CatalogUsers.Parent;
+
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -15,8 +13,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class NotificationsDatabase {
-    UsersDatabase usersDatabase;
-    HashMap<String, ArrayList<Notification>> notifications;
+    private UsersDatabase usersDatabase;
+    private HashMap<String, ArrayList<Notification>> notifications;
     public final String path = "src/CatalogDatabase/Database/notifications.txt";
 
     public NotificationsDatabase (UsersDatabase usersDatabase) {
@@ -33,8 +31,25 @@ public class NotificationsDatabase {
         else
             notificationArray.add(notification);
     }
-    public ArrayList<Notification> getNotification (String parentCnp) {
-        return notifications.get(parentCnp);
+    public ArrayList<String> getNotificationsData (String parentCnp) {
+        ArrayList<String> notificationsData = new ArrayList<>();
+        ArrayList<Notification> notArray = notifications.get(parentCnp);
+        if (notArray == null)
+            return notificationsData;
+        String data;
+        for (Notification not : notArray) {
+            data = not.getDate();
+            data += ", Student: " + not.getGrade().getStudent();
+            data += ", Course: " + not.getGrade().getCourse();
+            if (not.getGrade().getPartialScore() != null) {
+                data += ", Partial: " + not.getGrade().getPartialScore();
+            }
+            if (not.getGrade().getExamScore() != null) {
+                data += ", Exam: " + not.getGrade().getExamScore();
+            }
+            notificationsData.add(data);
+        }
+        return notificationsData;
     }
     public void load() {
         ArrayList<String> lines = ReadFile.fromPath(path);
@@ -92,6 +107,11 @@ public class NotificationsDatabase {
             printWriter.close();
         } catch (IOException e) {
             System.out.println("Error updating notifications!");
+        }
+    }
+    public void setParents() {
+        for (Map.Entry<String, Parent> entry : usersDatabase.getParents().entrySet()) {
+           entry.getValue().setNotificationsDatabase(this);
         }
     }
     // Testing

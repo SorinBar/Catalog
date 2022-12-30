@@ -26,6 +26,7 @@ public class SetUp {
 
     public void loadUsersDatabase() {
         mediator.getUsersDatabase().load();
+
         loadedUsersDatabase = true;
     }
 
@@ -36,6 +37,7 @@ public class SetUp {
         }
         CatalogData.load(mediator.getCatalog(), mediator.getUsersDatabase(), Catalog.catalogPath);
         CatalogData.addParents(mediator.getCatalog(), mediator.getUsersDatabase());
+
         loadedCatalog = true;
     }
     public void loadScoreDatabase() {
@@ -44,6 +46,7 @@ public class SetUp {
             return;
         }
         mediator.getScoreVisitor().load(mediator.getUsersDatabase());
+
         loadedScoreDatabase = true;
     }
     public void loadNotificationsDatabase() {
@@ -52,6 +55,8 @@ public class SetUp {
             return;
         }
         mediator.getNotificationsDatabase().load();
+        mediator.getNotificationsDatabase().setParents();
+
         loadedNotificationsDatabase = true;
     }
     public void createAppFrames() {
@@ -60,6 +65,7 @@ public class SetUp {
             return;
         }
         mediator.create();
+
         createdAppFrames = true;
     }
     public void startGUI() {
