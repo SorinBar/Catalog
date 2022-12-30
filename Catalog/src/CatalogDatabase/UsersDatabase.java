@@ -116,14 +116,6 @@ public class UsersDatabase {
     public ArrayList<String> getParentsData() {
         return parentsData;
     }
-    // Testing
-    public void print() {
-        System.out.println(adminPassword);
-        System.out.println(teachers);
-        System.out.println(assistants);
-        System.out.println(parents);
-        System.out.println(students);
-    }
     public void load() {
         AdminData.load(this, adminPath);
         TeachersData.load(this, teacherPath);
@@ -138,5 +130,13 @@ public class UsersDatabase {
         AssistantsData.update(this, assistantsPath);
         ParentsData.update(this, parentsPath);
         StudentsData.update(this, studentsPath);
+    }
+    // Testing
+    public void print() {
+        System.out.println(adminPassword);
+        System.out.println(teachers);
+        System.out.println(assistants);
+        System.out.println(parents);
+        System.out.println(students);
     }
 }

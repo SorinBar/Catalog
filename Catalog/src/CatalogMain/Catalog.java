@@ -62,15 +62,6 @@ public class Catalog implements Subject {
 
         return  studentData;
     }
-
-
-    // Testing
-    public void print() {
-        for (Map.Entry<String, Course> entry : courses.entrySet()) {
-            entry.getValue().print();
-            System.out.println();
-        }
-    }
     @Override
     public void addObserver(CatalogPatterns.Observer observer) {
         if (!observers.contains(observer))
@@ -85,5 +76,15 @@ public class Catalog implements Subject {
         Notification notification = new Notification(grade);
         for (Observer observer : observers)
             observer.update(notification);
+    }
+    // Testing
+    public void print() {
+        for (Map.Entry<String, Course> entry : courses.entrySet()) {
+            entry.getValue().print();
+            System.out.println();
+        }
+    }
+    public ArrayList<Observer> getObservers() {
+        return observers;
     }
 }

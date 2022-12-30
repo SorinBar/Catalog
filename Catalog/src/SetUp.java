@@ -35,6 +35,7 @@ public class SetUp {
             return;
         }
         CatalogData.load(mediator.getCatalog(), mediator.getUsersDatabase(), Catalog.catalogPath);
+        CatalogData.addParents(mediator.getCatalog(), mediator.getUsersDatabase());
         loadedCatalog = true;
     }
     public void loadScoreDatabase() {
