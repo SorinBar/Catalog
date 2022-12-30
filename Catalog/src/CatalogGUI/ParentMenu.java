@@ -1,7 +1,6 @@
 package CatalogGUI;
 
 import CatalogUsers.Parent;
-import CatalogUsers.Student;
 
 import javax.swing.*;
 
@@ -16,7 +15,7 @@ public class ParentMenu {
     public ParentMenu(Mediator mediator) {
         this.mediator = mediator;
         panel = new JPanel();
-        notModel = new DefaultListModel<String>();
+        notModel = new DefaultListModel<>();
         notList = new JList<>(notModel);
         notPane = new JScrollPane(notList);
 
@@ -32,5 +31,4 @@ public class ParentMenu {
         notModel.clear();
         notModel.addAll(mediator.getNotificationsDatabase().getNotificationsData(parent.getCNP()));
     }
-
 }

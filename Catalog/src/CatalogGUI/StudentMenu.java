@@ -7,7 +7,6 @@ import javax.swing.*;
 public class StudentMenu {
     private Mediator mediator;
     private final JPanel panel;
-    private Student student;
     private final JList<String> gradesList;
     private final DefaultListModel<String> gradesModel;
     private final JScrollPane gradesPane;
@@ -15,7 +14,7 @@ public class StudentMenu {
     public StudentMenu(Mediator mediator) {
         this.mediator = mediator;
         panel = new JPanel();
-        gradesModel = new DefaultListModel<String>();
+        gradesModel = new DefaultListModel<>();
         gradesList = new JList<>(gradesModel);
         gradesPane = new JScrollPane(gradesList);
 
@@ -27,9 +26,7 @@ public class StudentMenu {
         return panel;
     }
     public void setStudent(Student student) {
-        this.student = student;
         gradesModel.clear();
         gradesModel.addAll(mediator.getCatalog().getStudentData(student));
     }
-
 }

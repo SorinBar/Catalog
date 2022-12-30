@@ -63,7 +63,7 @@ public class ScoreVisitor implements Visitor{
         Tuple<Student, String, Double> data = new Tuple<>(student, course, score);
         ArrayList<Tuple<Student, String, Double>> dataList = examScores.get(teacher);
         if (dataList == null) {
-            dataList = new ArrayList<Tuple<Student, String, Double>>();
+            dataList = new ArrayList<>();
             dataList.add(data);
             examScores.put(teacher, dataList);
         }
@@ -74,7 +74,7 @@ public class ScoreVisitor implements Visitor{
         Tuple<Student, String, Double> data = new Tuple<>(student, course, score);
         ArrayList<Tuple<Student, String, Double>> dataList = partialScores.get(assistant);
         if (dataList == null) {
-            dataList = new ArrayList<Tuple<Student, String, Double>>();
+            dataList = new ArrayList<>();
             dataList.add(data);
             partialScores.put(assistant, dataList);
         }

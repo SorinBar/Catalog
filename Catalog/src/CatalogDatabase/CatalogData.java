@@ -6,7 +6,6 @@ import CatalogMain.Catalog;
 import CatalogUsers.Parent;
 import CatalogUsers.Student;
 
-import javax.xml.catalog.CatalogResolver;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;

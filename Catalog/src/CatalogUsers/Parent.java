@@ -1,7 +1,6 @@
 package CatalogUsers;
 
 import CatalogDatabase.NotificationsDatabase;
-import CatalogMain.Catalog;
 import CatalogPatterns.Notification;
 import CatalogPatterns.Observer;
 

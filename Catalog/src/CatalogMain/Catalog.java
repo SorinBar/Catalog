@@ -12,14 +12,14 @@ import java.util.*;
 public class Catalog implements Subject {
     private static Catalog instance = null;
     private static HashMap<String, Course> courses;
-    private ArrayList<Observer> observers;
+    private final ArrayList<Observer> observers;
     ArrayList<String> coursesNames;
     public final static String catalogPath = "src/CatalogDatabase/Database/catalog.txt";
 
     private Catalog() {
-        courses = new HashMap<String, Course>();
-        observers = new ArrayList<Observer>();
-        coursesNames =  new ArrayList<String>();
+        courses = new HashMap<>();
+        observers = new ArrayList<>();
+        coursesNames =  new ArrayList<>();
     }
     public static Catalog getInstance() {
         if (instance == null)

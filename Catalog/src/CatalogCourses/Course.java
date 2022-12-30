@@ -10,7 +10,7 @@ public abstract class Course {
     private String name;
     private Teacher teacher;
     private int credit;
-    private HashSet<Assistant> assistants;
+    private final HashSet<Assistant> assistants;
     protected ArrayList<Grade> grades;
     public HashMap<String, Group> groups;
     private ScoreStrategy strategy;
@@ -21,9 +21,9 @@ public abstract class Course {
         this.name = builder.name;
         this.teacher = builder.teacher;
         this.credit = builder.credit;
-        assistants = new HashSet<Assistant>();
-        grades = new ArrayList<Grade>();
-        groups = new HashMap<String, Group>();
+        assistants = new HashSet<>();
+        grades = new ArrayList<>();
+        groups = new HashMap<>();
         snapshot = new Snapshot();
         strategy = null;
         groupsData = new ArrayList<>();
@@ -95,14 +95,14 @@ public abstract class Course {
         grades.add(grade);
     }
     public ArrayList<Student> getAllStudents() {
-        ArrayList<Student> students = new ArrayList<Student>();
+        ArrayList<Student> students = new ArrayList<>();
         for (Map.Entry<String, Group> pair : groups.entrySet())
             students.addAll(pair.getValue());
 
         return students;
     }
     public HashMap<Student, Grade> getAllStudentGrades() {
-        HashMap<Student, Grade> studGrades = new HashMap<Student, Grade>();
+        HashMap<Student, Grade> studGrades = new HashMap<>();
         for (Grade grade : grades)
             studGrades.put(grade.getStudent(), grade);
         return studGrades;
@@ -159,7 +159,7 @@ public abstract class Course {
         private ArrayList<Grade> grades;
 
         public Snapshot() {
-            grades = new ArrayList<Grade>();
+            grades = new ArrayList<>();
         }
         public void clearData() {
             while (grades.size() != 0)

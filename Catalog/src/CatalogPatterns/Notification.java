@@ -3,7 +3,6 @@ package CatalogPatterns;
 import CatalogAux.Grade;
 
 import java.util.Date;
-import java.util.SplittableRandom;
 
 public class Notification {
     private String date;

@@ -41,7 +41,7 @@ public class UsersMenu{
         studentButton = new JRadioButton("Student");
         parentButton = new JRadioButton("Parent");
         radioSelect = new JRadioSelect();
-        usersModel = new DefaultListModel<String>();
+        usersModel = new DefaultListModel<>();
         usersList = new JList<>(usersModel);
         usersPane = new JScrollPane(usersList);
         addButton = new JButton("Add User");

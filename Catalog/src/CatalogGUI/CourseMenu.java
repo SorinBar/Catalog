@@ -14,7 +14,7 @@ import java.awt.event.ActionListener;
 
 
 public class CourseMenu {
-    private Mediator mediator;
+    private final Mediator mediator;
     private final JPanel panel;
     private final JScrollPane studentsPane;
     private final JList<String> studentsList;
@@ -28,7 +28,6 @@ public class CourseMenu {
     private final JComboBox<String> groupsBox;
     private final JButton groupsButton;
     private final JLabel assistantLabel;
-    private final JButton assistantButton;
     private final JComboBoxSelect jComboBoxSelect;
     private final AddGroupMenu addGroupMenu;
     private final JButton addButton;
@@ -41,7 +40,7 @@ public class CourseMenu {
         // Set UP
         this.mediator = mediator;
         panel = new JPanel();
-        studentsModel = new DefaultListModel<String>();
+        studentsModel = new DefaultListModel<>();
         studentsList = new JList<>(studentsModel);
         studentsPane = new JScrollPane(studentsList);
         jListSelect = new JListSelect();
@@ -50,10 +49,9 @@ public class CourseMenu {
         selectedGroup = null;
         selectedStudent = null;
         titleLabel = new JLabel();
-        groupsBox = new JComboBox<String>();
+        groupsBox = new JComboBox<>();
         groupsButton = new JButton("Add Group");
         assistantLabel = new JLabel("Assistant: -");
-        assistantButton = new JButton("Set Assistant");
         jComboBoxSelect = new JComboBoxSelect();
         addGroupMenu = new AddGroupMenu();
         addButton = new JButton("Add Student");

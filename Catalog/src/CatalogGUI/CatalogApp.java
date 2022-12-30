@@ -34,6 +34,4 @@ public class CatalogApp extends JFrame {
     public Mediator getMediator() {
         return mediator;
     }
-
-
 }

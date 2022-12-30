@@ -28,14 +28,14 @@ public class UsersDatabase {
     public final static String studentsPath = "src/CatalogDatabase/Database/students.txt";
 
     private UsersDatabase(){
-        teachers = new HashMap<String, Teacher>();
-        assistants = new HashMap<String, Assistant>();
-        students = new HashMap<String, Student>();
-        parents = new HashMap<String, Parent>();
-        teachersData = new ArrayList<String>();
-        assistantsData = new ArrayList<String>();
-        studentsData = new ArrayList<String>();
-        parentsData = new ArrayList<String>();
+        teachers = new HashMap<>();
+        assistants = new HashMap<>();
+        students = new HashMap<>();
+        parents = new HashMap<>();
+        teachersData = new ArrayList<>();
+        assistantsData = new ArrayList<>();
+        studentsData = new ArrayList<>();
+        parentsData = new ArrayList<>();
         userDataComp = new Comparator<String>() {
             @Override
             public int compare(String s1, String s2) {

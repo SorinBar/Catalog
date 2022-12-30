@@ -12,7 +12,7 @@ public class FullCourse extends Course{
     }
     @Override
     public ArrayList<Student> getGraduatedStudents() {
-        ArrayList<Student> students = new ArrayList<Student>();
+        ArrayList<Student> students = new ArrayList<>();
         for (Grade grade: grades) {
             if (grade.getPartialScore() >= 3.0 && grade.getExamScore() >= 2.0)
                 students.add(grade.getStudent());

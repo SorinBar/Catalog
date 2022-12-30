@@ -6,8 +6,8 @@ import CatalogGUI.Mediator;
 import CatalogMain.Catalog;
 
 public class SetUp {
-    private Mediator mediator;
-    private CatalogApp catalogApp;
+    private final Mediator mediator;
+    private final CatalogApp catalogApp;
     private boolean loadedUsersDatabase;
     private boolean loadedCatalog;
     private boolean loadedScoreDatabase;
