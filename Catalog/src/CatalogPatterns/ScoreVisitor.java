@@ -27,7 +27,6 @@ public class ScoreVisitor implements Visitor{
     }
     @Override
     public void visit(Assistant assistant) {
-        System.out.println(catalog.getObservers());
         ArrayList<Tuple<Student, String, Double>> dataList = partialScores.get(assistant);
         if (dataList == null)
             return;
