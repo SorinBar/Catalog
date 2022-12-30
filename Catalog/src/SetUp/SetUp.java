@@ -1,10 +1,9 @@
+package SetUp;
+
 import CatalogDatabase.*;
 import CatalogGUI.CatalogApp;
 import CatalogGUI.Mediator;
 import CatalogMain.Catalog;
-import CatalogUsers.Student;
-
-import javax.sql.rowset.RowSetMetaDataImpl;
 
 public class SetUp {
     private Mediator mediator;
@@ -82,6 +81,10 @@ public class SetUp {
         loadNotificationsDatabase();
         createAppFrames();
         startGUI();
+    }
+    // Testing
+    public Mediator getMediator() {
+        return mediator;
     }
     public static void main(String[] args) {
         SetUp setUp = new SetUp();

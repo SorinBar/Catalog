@@ -137,8 +137,6 @@ public abstract class Course {
         return groupsData;
     }
 
-    // Get student grade iteram prin gradeuri si cu .equals returnam sau null
-
     public static abstract class CourseBuilder {
         private String name;
         private Teacher teacher;
