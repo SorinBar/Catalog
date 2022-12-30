@@ -37,7 +37,7 @@ public class ScoreVisitor implements Visitor{
             grade = new Grade();
             grade.setStudent(data.getX());
             grade.setCourse(data.getY());
-            grade.setExamScore(data.getZ());
+            grade.setPartialScore(data.getZ());
             catalog.notifyObservers(grade);
         }
         partialScores.remove(assistant);
@@ -63,19 +63,18 @@ public class ScoreVisitor implements Visitor{
         Tuple<Student, String, Double> data = new Tuple<>(student, course, score);
         ArrayList<Tuple<Student, String, Double>> dataList = examScores.get(teacher);
         if (dataList == null) {
-            dataList = new ArrayList<Tuple<Student, String, Double>>();
+            dataList = new ArrayList<>();
             dataList.add(data);
             examScores.put(teacher, dataList);
         }
         else
             dataList.add(data);
     }
-
     public void addPartialScore(Assistant assistant, Student student, String course, Double score) {
         Tuple<Student, String, Double> data = new Tuple<>(student, course, score);
         ArrayList<Tuple<Student, String, Double>> dataList = partialScores.get(assistant);
         if (dataList == null) {
-            dataList = new ArrayList<Tuple<Student, String, Double>>();
+            dataList = new ArrayList<>();
             dataList.add(data);
             partialScores.put(assistant, dataList);
         }

@@ -1,11 +1,18 @@
 package CatalogUsers;
 
+import CatalogDatabase.NotificationsDatabase;
 import CatalogPatterns.Notification;
 import CatalogPatterns.Observer;
 
 public class Parent extends User implements Observer {
+    NotificationsDatabase notificationsDatabase;
+
     public Parent(String firstName, String lastName, String CNP) {
         super(firstName, lastName, CNP);
+        notificationsDatabase = null;
+    }
+    public void setNotificationsDatabase(NotificationsDatabase notificationsDatabase) {
+        this.notificationsDatabase = notificationsDatabase;
     }
     @Override
     public void update(Notification notification) {
@@ -14,13 +21,8 @@ public class Parent extends User implements Observer {
             return;
         if (stud.getMother() == null)
             return;
-        if (!stud.getFather().equals(this))
-            return;
-        if (!stud.getMother().equals(this))
-            return;
-        System.out.print(notification.getDate() + ": ");
-        System.out.println(notification.getGrade());
-        // Salvam notificarea
-        // in notifications database
+        if (stud.getFather().equals(this) || stud.getMother().equals(this)) {
+            notificationsDatabase.addNotification(getCNP(), notification);
+        }
     }
 }

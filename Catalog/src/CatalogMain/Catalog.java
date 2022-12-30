@@ -5,20 +5,21 @@ import CatalogCourses.Course;
 import CatalogPatterns.Notification;
 import CatalogPatterns.Observer;
 import CatalogPatterns.Subject;
+import CatalogUsers.Student;
 
 import java.util.*;
 
 public class Catalog implements Subject {
     private static Catalog instance = null;
     private static HashMap<String, Course> courses;
-    private ArrayList<Observer> observers;
+    private final ArrayList<Observer> observers;
     ArrayList<String> coursesNames;
     public final static String catalogPath = "src/CatalogDatabase/Database/catalog.txt";
 
     private Catalog() {
-        courses = new HashMap<String, Course>();
-        observers = new ArrayList<Observer>();
-        coursesNames =  new ArrayList<String>();
+        courses = new HashMap<>();
+        observers = new ArrayList<>();
+        coursesNames =  new ArrayList<>();
     }
     public static Catalog getInstance() {
         if (instance == null)
@@ -45,13 +46,21 @@ public class Catalog implements Subject {
     public ArrayList<String> getCoursesNames() {
         return coursesNames;
     }
-
-    // Testing
-    public void print() {
+    public ArrayList<String> getStudentData(Student student) {
+        ArrayList<String> studentData = new ArrayList<>();
+        Grade grade;
+        String data;
         for (Map.Entry<String, Course> entry : courses.entrySet()) {
-            entry.getValue().print();
-            System.out.println();
+            grade = entry.getValue().getGrade(student);
+            if (grade != null) {
+                data = "Course: " + entry.getValue().getName();
+                data += ", Partial: " + grade.getPartialScore();
+                data += ", Exam: " + grade.getExamScore();
+                studentData.add(data);
+            }
         }
+
+        return  studentData;
     }
     @Override
     public void addObserver(CatalogPatterns.Observer observer) {
@@ -67,5 +76,15 @@ public class Catalog implements Subject {
         Notification notification = new Notification(grade);
         for (Observer observer : observers)
             observer.update(notification);
+    }
+    // Testing
+    public void print() {
+        for (Map.Entry<String, Course> entry : courses.entrySet()) {
+            entry.getValue().print();
+            System.out.println();
+        }
+    }
+    public ArrayList<Observer> getObservers() {
+        return observers;
     }
 }

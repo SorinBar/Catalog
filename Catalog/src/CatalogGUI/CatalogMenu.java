@@ -12,8 +12,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class CatalogMenu {
-
-    private Mediator mediator;
+    private final Mediator mediator;
     private final JPanel panel;
     private final JScrollPane coursesPane;
     private final JList<String> coursesList;
@@ -31,7 +30,7 @@ public class CatalogMenu {
         // Set UP
         this.mediator = mediator;
         panel = new JPanel();
-        coursesModel = new DefaultListModel<String>();
+        coursesModel = new DefaultListModel<>();
         coursesList = new JList<>(coursesModel);
         coursesPane = new JScrollPane(coursesList);
         jListSelect = new JListSelect();

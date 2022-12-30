@@ -1,6 +1,8 @@
 package CatalogGUI;
 
 import CatalogUsers.Assistant;
+import CatalogUsers.Parent;
+import CatalogUsers.Student;
 import CatalogUsers.Teacher;
 import Encryption.Digest;
 
@@ -246,6 +248,74 @@ public class SingInMenu{
                             JOptionPane.showMessageDialog(mediator.getCatalogApp(), "Invalid Password!");
                         else
                             mediator.showAssistantMenu(assistant);
+                    }
+                }
+            }
+            if (studentButton.isSelected()) {
+                Student student = mediator.getUsersDatabase().getStudent(userCNP);
+                if (student == null) {
+                    JOptionPane.showMessageDialog(mediator.getCatalogApp(),
+                            "Student CNP not found!",
+                            "Error", JOptionPane.ERROR_MESSAGE);
+                }
+                else {
+                    // Student found
+                    if (student.getHashPass().equals("null")) {
+                        String password = JOptionPane.showInputDialog(mediator.getCatalogApp(),
+                                "Enter new password:", "New Account", JOptionPane.PLAIN_MESSAGE);
+                        if (password != null) {
+                            if (password.isBlank())
+                                JOptionPane.showMessageDialog(mediator.getCatalogApp(),
+                                        "Password should not be empty!", "Error",
+                                        JOptionPane.ERROR_MESSAGE);
+                            else {
+                                password = Digest.SHA256(password);
+                                student.setHashPass(password);
+                                JOptionPane.showMessageDialog(mediator.getCatalogApp(),
+                                        "Password updated!", "Success",
+                                        JOptionPane.INFORMATION_MESSAGE);
+                            }
+                        }
+                    }
+                    else {
+                        if (!student.getHashPass().equals(userPassHash))
+                            JOptionPane.showMessageDialog(mediator.getCatalogApp(), "Invalid Password!");
+                        else
+                            mediator.showStudentMenu(student);
+                    }
+                }
+            }
+            if (parentButton.isSelected()) {
+                Parent parent = mediator.getUsersDatabase().getParent(userCNP);
+                if (parent == null) {
+                    JOptionPane.showMessageDialog(mediator.getCatalogApp(),
+                            "Parent CNP not found!",
+                            "Error", JOptionPane.ERROR_MESSAGE);
+                }
+                else {
+                    // Parent found
+                    if (parent.getHashPass().equals("null")) {
+                        String password = JOptionPane.showInputDialog(mediator.getCatalogApp(),
+                                "Enter new password:", "New Account", JOptionPane.PLAIN_MESSAGE);
+                        if (password != null) {
+                            if (password.isBlank())
+                                JOptionPane.showMessageDialog(mediator.getCatalogApp(),
+                                        "Password should not be empty!", "Error",
+                                        JOptionPane.ERROR_MESSAGE);
+                            else {
+                                password = Digest.SHA256(password);
+                                parent.setHashPass(password);
+                                JOptionPane.showMessageDialog(mediator.getCatalogApp(),
+                                        "Password updated!", "Success",
+                                        JOptionPane.INFORMATION_MESSAGE);
+                            }
+                        }
+                    }
+                    else {
+                        if (!parent.getHashPass().equals(userPassHash))
+                            JOptionPane.showMessageDialog(mediator.getCatalogApp(), "Invalid Password!");
+                        else
+                            mediator.showParentMenu(parent);
                     }
                 }
             }

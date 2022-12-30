@@ -1,59 +1,167 @@
 package Test;
 
 import CatalogAux.Grade;
-import CatalogCourses.*;
-
-import CatalogDatabase.UsersDatabase;
+import CatalogCourses.Course;
+import CatalogCourses.FullCourse;
+import CatalogMain.Catalog;
 import CatalogPatterns.BestExamScore;
 import CatalogPatterns.BestPartialScore;
 import CatalogPatterns.BestTotalScore;
-import CatalogUsers.*;
+import CatalogPatterns.ScoreVisitor;
+import CatalogUsers.Assistant;
+import CatalogUsers.Student;
+import CatalogUsers.Teacher;
+import CatalogUsers.UserFactory;
+import SetUp.SetUp;
+
+import java.util.Comparator;
 
 
 public class Test {
     public static void main(String[] args) {
+        SetUp setUp = new SetUp();
+        setUp.loadUsersDatabase();
+        setUp.loadCatalog();
+        setUp.loadScoreDatabase();
+        setUp.loadNotificationsDatabase();
 
-        FullCourse test = (FullCourse) new FullCourse.FullCourseBuilder("Mate")
-                .teacher(new Teacher("Ana", "Maria", "2343242"))
-                .credit(4)
-                .build();
+        Catalog catalog = setUp.getMediator().getCatalog();
 
-        test.addGroup("321CC", new Assistant("first", "last", "1"));
-        test.addGroup("322CC", new Assistant("first2", "last", "2"));
-        test.addStudent("321CC", new Student("A", "B", "3"));
-        test.addStudent("321CC", new Student("A", "C", "4"));
-        test.addStudent("322CC", new Student("C", "B", "5"));
-        System.out.println(test.getAllStudents());
-        Grade grade = new Grade();
-        grade.setStudent(new Student("David", "Petrescu", "6"));
-        grade.setExamScore(3.9);
-        grade.setPartialScore(3.0);
-        grade.setCourse("Mate");
-        test.addGrade(grade);
-        grade = new Grade();
-        grade.setStudent(new Student("Florin", "Cazaciu", "7"));
-        grade.setExamScore(3.2);
-        grade.setPartialScore(4.0);
-        grade.setCourse("Mate");
-        test.addGrade(grade);
-        System.out.println("TEST " + test.getGrade(new Student("Florin", "Cazaciu", "7")).getStudent());
-        System.out.println(test.getGraduatedStudents());
-        System.out.println("Best partial grade:");
-        test.setStrategy(new BestPartialScore());
-        System.out.println(test.getBestStudent());
-        System.out.println("Best exam grade:");
-        test.setStrategy(new BestExamScore());
-        System.out.println(test.getBestStudent());
-        System.out.println("Best exam grade:");
-        test.setStrategy(new BestTotalScore());
-        System.out.println(test.getBestStudent());
-        Teacher t1 = new Teacher("Florin", "Tamas", "7");
+        System.out.println("--------Initial Catalog--------");
+        catalog.print();
+        System.out.println("--------Started Testing--------");
 
-        UsersDatabase database = UsersDatabase.getInstance();
-        User user = UserFactory.getUser(UserFactory.UserType.Parent, "prenume", "nume", "1234");
-        database.add((Parent) user);
-        System.out.println(database.getParent("1234"));
+        // Add Course
+        {
+            System.out.println("--------Add Course--------");
+            Course course = new FullCourse.FullCourseBuilder("Mate")
+                    .teacher(new Teacher("Ana", "Maria", "2343242"))
+                    .credit(4)
+                    .build();
 
+            catalog.addCourse(course);
+
+            catalog.print();
+        }
+        // Add Group
+        {
+            System.out.println("--------Add Group--------");
+            Course course = catalog.getCourse("Mate");
+            course.addGroup("GrupaA", new Assistant("AssistantFirstName",
+                    "AssistantLastName", "123"), new Comparator<Student>() {
+                @Override
+                public int compare(Student s1, Student s2) {
+                    return s1.getCNP().compareTo(s2.getCNP());
+                }
+            });
+
+            course.print();
+        }
+        Student student;
+        // Add students
+        {
+            System.out.println("--------Add Students--------");
+            Course course = catalog.getCourse("Mate");
+            student = (Student) UserFactory.getUser(UserFactory.UserType.Student,
+                    "StudentFirstName1", "StudentLastName1", "124");
+            course.addStudent("GrupaA", student);
+            course.addStudent("GrupaA", new Student("StudentFirstName2",
+                    "StudentLastName2","125"));
+
+            course.print();
+        }
+        // Add Grade
+        {
+            System.out.println("--------Add Grade--------");
+            Course course = catalog.getCourse("Mate");
+
+            Grade grade = new Grade();
+            grade.setCourse(course.getName());
+            grade.setStudent(student);
+
+            // Add empty grade for student
+            // This is done automatically when student is assigned to the course
+            course.addGrade(grade);
+
+            ScoreVisitor scoreVisitor = setUp.getMediator().getScoreVisitor();
+            scoreVisitor.addExamScore(course.getTeacher(), student, course.getName(), 3.6);
+
+            course.print();
+        }
+        // Validate Grade
+        {
+            System.out.println("--------Validate Grade--------");
+            Course course = catalog.getCourse("Mate");
+
+            ScoreVisitor scoreVisitor = setUp.getMediator().getScoreVisitor();
+            scoreVisitor.print();
+            course.getTeacher().accept(scoreVisitor);
+
+            course.print();
+        }
+        // Back Up Grades
+        {
+            System.out.println("--------Back Up Grade--------");
+            Course course = catalog.getCourse("Mate");
+
+            course.makeBackup();
+            course.getGrade(student).setExamScore(10.0);
+
+            course.print();
+        }
+        // Reset Grades
+        {
+            System.out.println("--------Reset Grade--------");
+            Course course = catalog.getCourse("Mate");
+
+            course.undo();
+
+            course.print();
+        }
+        // Get The Best Student
+        {
+            System.out.println("--------Get The Best Student--------");
+            Course course = catalog.getCourse("Mate");
+
+            // Add grade for the other student
+            for (Student stud : course.getAllStudents()) {
+                // The second student
+                if (stud.getCNP().equals("125")) {
+                    Grade grade = new Grade();
+                    grade.setCourse(course.getName());
+                    grade.setStudent(stud);
+                    grade.setExamScore(3.7);
+                    course.addGrade(grade);
+                }
+            }
+            double score = 4.3;
+            // Add grade for the other student
+            for (Student stud : course.getAllStudents()) {
+                course.getGrade(stud).setPartialScore(score);
+                score -= 2.0;
+            }
+            course.print();
+            course.setStrategy(new BestExamScore());
+            System.out.println("Best exam strategy:");
+            System.out.println(course.getBestStudent());
+
+            course.setStrategy(new BestPartialScore());
+            System.out.println("Best partial strategy:");
+            System.out.println(course.getBestStudent());
+
+            course.setStrategy(new BestTotalScore());
+            System.out.println("Best total strategy:");
+            System.out.println(course.getBestStudent());
+        }
+        // Remove Course
+        {
+            System.out.println("--------Remove Course--------");
+            Course course = catalog.getCourse("Mate");
+
+            catalog.removeCourse(course);
+
+            catalog.print();
+        }
     }
 
 }

@@ -1,14 +1,13 @@
+package SetUp;
+
 import CatalogDatabase.*;
 import CatalogGUI.CatalogApp;
 import CatalogGUI.Mediator;
 import CatalogMain.Catalog;
-import CatalogUsers.Student;
-
-import javax.sql.rowset.RowSetMetaDataImpl;
 
 public class SetUp {
-    private Mediator mediator;
-    private CatalogApp catalogApp;
+    private final Mediator mediator;
+    private final CatalogApp catalogApp;
     private boolean loadedUsersDatabase;
     private boolean loadedCatalog;
     private boolean loadedScoreDatabase;
@@ -26,6 +25,7 @@ public class SetUp {
 
     public void loadUsersDatabase() {
         mediator.getUsersDatabase().load();
+
         loadedUsersDatabase = true;
     }
 
@@ -35,6 +35,8 @@ public class SetUp {
             return;
         }
         CatalogData.load(mediator.getCatalog(), mediator.getUsersDatabase(), Catalog.catalogPath);
+        CatalogData.addParents(mediator.getCatalog(), mediator.getUsersDatabase());
+
         loadedCatalog = true;
     }
     public void loadScoreDatabase() {
@@ -43,6 +45,7 @@ public class SetUp {
             return;
         }
         mediator.getScoreVisitor().load(mediator.getUsersDatabase());
+
         loadedScoreDatabase = true;
     }
     public void loadNotificationsDatabase() {
@@ -51,6 +54,8 @@ public class SetUp {
             return;
         }
         mediator.getNotificationsDatabase().load();
+        mediator.getNotificationsDatabase().setParents();
+
         loadedNotificationsDatabase = true;
     }
     public void createAppFrames() {
@@ -59,6 +64,7 @@ public class SetUp {
             return;
         }
         mediator.create();
+
         createdAppFrames = true;
     }
     public void startGUI() {
@@ -75,6 +81,10 @@ public class SetUp {
         loadNotificationsDatabase();
         createAppFrames();
         startGUI();
+    }
+    // Testing
+    public Mediator getMediator() {
+        return mediator;
     }
     public static void main(String[] args) {
         SetUp setUp = new SetUp();

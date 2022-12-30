@@ -18,7 +18,7 @@ public class TeacherMenu {
     public TeacherMenu(Mediator mediator) {
         this.mediator = mediator;
         panel = new JPanel();
-        gradesModel = new DefaultListModel<String>();
+        gradesModel = new DefaultListModel<>();
         gradesList = new JList<>(gradesModel);
         gradesPane = new JScrollPane(gradesList);
         validateGradesButton = new JButton("Validate All Grades");
@@ -51,5 +51,4 @@ public class TeacherMenu {
         gradesModel.clear();
         gradesModel.addAll(mediator.getScoreVisitor().getScoresData(teacher));
     }
-
 }

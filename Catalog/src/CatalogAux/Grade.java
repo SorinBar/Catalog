@@ -52,23 +52,15 @@ public class Grade implements Comparable, Cloneable{
         Grade copy = new Grade();
         copy.setStudent(student);
         copy.setCourse(course);
-        copy.setExamScore(examScore + 0.0);
-        copy.setPartialScore(partialScore + 0.0);
+        if (partialScore != null)
+            copy.setPartialScore(partialScore + 0.0);
+        if (examScore != null)
+            copy.setExamScore(examScore + 0.0);
 
         return copy;
     }
     @Override
     public String toString() {
-        String part, exam;
-        if (partialScore == null)
-            part = "null";
-        else
-            part = partialScore.toString();
-        if (examScore == null)
-            exam = "null";
-        else
-            exam = examScore.toString();
-
         return "Grade: " + "partial: " + partialScore + ", exam: " + examScore + ", Student: " + student;
     }
 }

@@ -7,7 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class AssistantMenu {
-    private Mediator mediator;
+    private final Mediator mediator;
     private final JPanel panel;
     private Assistant assistant;
     private final JList<String> gradesList;
@@ -18,7 +18,7 @@ public class AssistantMenu {
     public AssistantMenu(Mediator mediator) {
         this.mediator = mediator;
         panel = new JPanel();
-        gradesModel = new DefaultListModel<String>();
+        gradesModel = new DefaultListModel<>();
         gradesList = new JList<>(gradesModel);
         gradesPane = new JScrollPane(gradesList);
         validateGradesButton = new JButton("Validate All Grades");

@@ -3,6 +3,7 @@ package CatalogDatabase;
 import CatalogAux.*;
 import CatalogCourses.*;
 import CatalogMain.Catalog;
+import CatalogUsers.Parent;
 import CatalogUsers.Student;
 
 import java.io.FileWriter;
@@ -149,6 +150,11 @@ public class CatalogData {
             printWriter.close();
         } catch (IOException e) {
             System.out.println("Error updating admin!");
+        }
+    }
+    public static void addParents(Catalog catalog, UsersDatabase usersDatabase) {
+        for (Map.Entry<String, Parent> entry : usersDatabase.getParents().entrySet()) {
+            catalog.addObserver(entry.getValue());
         }
     }
 }
